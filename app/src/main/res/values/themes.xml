@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.WoowahanAccountBook" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/purple_524d90</item>
+        <item name="colorPrimaryVariant">@color/light_purple_a79fcb</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,5 +12,15 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="font_medium">
+        <item name="fontFamily">@font/ko_pub_world_dotum_pro</item>
+        <item name="fontWeight">500</item>
+    </style>
+
+    <style name="font_bold">
+        <item name="fontFamily">@font/ko_pub_world_dotum_pro</item>
+        <item name="fontWeight">700</item>
     </style>
 </resources>

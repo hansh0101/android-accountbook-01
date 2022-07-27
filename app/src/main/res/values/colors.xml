@@ -7,4 +7,46 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--Primary-->
+    <color name="white_f7f6f3">#F7F6F3</color>
+    <color name="white_ffffff">#FFFFFF</color>
+    <color name="white_80ffffff">#80FFFFFF</color>
+    <color name="yellow_f5b853">#F5B853</color>
+    <color name="purple_524d90">#524D90</color>
+    <color name="light_purple_a79fcb">#A79FCB</color>
+    <color name="purple_66a79fcb">#66A79FCB</color>
+    <color name="red_e75b3f">#E75B3F</color>
+
+    <!--Secondary-->
+    <color name="blue_4a6cc3">#4A6CC3</color>
+    <color name="blue_2e86c7">#2E86C7</color>
+    <color name="blue_4ca1d3">#4CA1D3</color>
+    <color name="blue_48c2e9">#48C2E9</color>
+    <color name="blue_6ed5eb">#6ED5EB</color>
+    <color name="green_9fe7c8">#9FE7C8</color>
+    <color name="green_94d3cc">#94D3CC</color>
+    <color name="green_4cb8b8">#4CB8B8</color>
+    <color name="green_40b98d">#40B98D</color>
+    <color name="green_2fa488">#2FA488</color>
+    <color name="purple_625eba">#625EBA</color>
+    <color name="purple_817dce">#817DCE</color>
+    <color name="purple_9b7dce">#9B7DCE</color>
+    <color name="purple_b391eb">#B391EB</color>
+    <color name="purple_d092e2">#D092E2</color>
+    <color name="pink_f1b4ef">#F1B4EF</color>
+    <color name="pink_f4aee1">#F4AEE1</color>
+    <color name="pink_f396b8">#F396B8</color>
+    <color name="pink_dc5d7b">#DC5D7B</color>
+    <color name="pink_cb588f">#CB588F</color>
+    <color name="olive_9bd182">#9BD182</color>
+    <color name="olive_a3cb7a">#A3CB7A</color>
+    <color name="olive_b5cc7a">#B5CC7A</color>
+    <color name="olive_ccd67a">#CCD67A</color>
+    <color name="olive_eae07c">#EAE07C</color>
+    <color name="yellow_edcf65">#EDCF65</color>
+    <color name="yellow_ebc374">#EBC374</color>
+    <color name="yellow_e1ad60">#E1AD60</color>
+    <color name="yellow_e29c4d">#E29C4D</color>
+    <color name="yellow_e39145">#E39145</color>
 </resources>

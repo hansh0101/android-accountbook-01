@@ -1,7 +1,7 @@
 package co.kr.woowahan_accountbook.application
 
 import android.app.Application
-import androidx.viewbinding.BuildConfig
+import co.kr.woowahan_accountbook.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 

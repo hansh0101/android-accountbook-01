@@ -12,19 +12,19 @@ class AppDatabaseHelper @Inject constructor(
     override fun onCreate(database: SQLiteDatabase) {
         val paymentCreationQuery: String =
             "CREATE TABLE if not exists PAYMENT (" +
-                    "ID integer primary key autoincrement," +
+                    "_ID integer primary key autoincrement," +
                     "PAYMENT_NAME text not null" +
                     ");"
         val classificationCreationQuery: String =
             "CREATE TABLE if not exists CLASSIFICATION (" +
-                    "ID integer primary key autoincrement," +
+                    "_ID integer primary key autoincrement," +
                     "CLASSIFICATION_TYPE text not null," +
                     "CLASSIFICATION_COLOR text not null," +
                     "IS_INCOME integer" +
                     ");"
         val historyCreationQuery: String =
             "CREATE TABLE if not exists HISTORY (" +
-                    "ID integer primary key autoincrement," +
+                    "_ID integer primary key autoincrement," +
                     "AMOUNT integer not null," +
                     "DESCRIPTION text," +
                     "YEAR integer not null," +
@@ -32,8 +32,8 @@ class AppDatabaseHelper @Inject constructor(
                     "DAY integer not null," +
                     "PAYMENT_ID integer," +
                     "CLASSIFICATION_ID integer," +
-                    "FOREIGN KEY(PAYMENT_ID) REFERENCES PAYMENT(ID)," +
-                    "FOREIGN KEY(CLASSIFICATION_ID) REFERENCES CLASSIFICATION(ID)" +
+                    "FOREIGN KEY(PAYMENT_ID) REFERENCES PAYMENT(_ID)," +
+                    "FOREIGN KEY(CLASSIFICATION_ID) REFERENCES CLASSIFICATION(_ID)" +
                     ");"
 
         with(database) {

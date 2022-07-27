@@ -10,7 +10,29 @@ class HistoryDataSourceImpl @Inject constructor(
     private val writableDatabase: SQLiteDatabase
 ) : HistoryDataSource {
     override fun getHistory(id: Int): HistoryDto {
-        TODO("Not yet implemented")
+        val selection = "_ID = ?"
+        val selectionArgs = arrayOf("$id")
+        val cursor = readableDatabase.query(
+            "HISTORY",
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        ).apply { moveToFirst() }
+        val history = HistoryDto(
+            id = cursor.getInt(0),
+            amount = cursor.getInt(1),
+            description = cursor.getString(2),
+            year = cursor.getInt(3),
+            month = cursor.getInt(4),
+            day = cursor.getInt(5),
+            paymentId = cursor.getInt(6),
+            classificationId = cursor.getInt(7)
+        )
+        cursor.close()
+        return history
     }
 
     override fun getHistories(): List<HistoryDto> {

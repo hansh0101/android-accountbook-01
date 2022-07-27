@@ -96,7 +96,23 @@ class HistoryDataSourceImpl @Inject constructor(
         paymentId: Int,
         classificationId: Int
     ) {
-        TODO("Not yet implemented")
+        val values = ContentValues().apply {
+            put("AMOUNT", amount)
+            put("DESCRIPTION", description)
+            put("YEAR", year)
+            put("MONTH", month)
+            put("DAY", day)
+            put("PAYMENT_ID", paymentId)
+            put("CLASSIFICATION_ID", classificationId)
+        }
+        val selection = "_ID LIKE ?"
+        val selectionArgs = arrayOf("$id")
+        writableDatabase.update(
+            "HISTORY",
+            values,
+            selection,
+            selectionArgs
+        )
     }
 
     override fun deleteHistory(id: Int) {

@@ -36,7 +36,33 @@ class HistoryDataSourceImpl @Inject constructor(
     }
 
     override fun getHistories(): List<HistoryDto> {
-        TODO("Not yet implemented")
+        val sortOrder = "_ID ASC"
+        val cursor = readableDatabase.query(
+            "HISTORY",
+            null,
+            null,
+            null,
+            null,
+            null,
+            sortOrder
+        )
+        val histories = mutableListOf<HistoryDto>()
+        while (cursor.moveToNext()) {
+            histories.add(
+                HistoryDto(
+                    id = cursor.getInt(0),
+                    amount = cursor.getInt(1),
+                    description = cursor.getString(2),
+                    year = cursor.getInt(3),
+                    month = cursor.getInt(4),
+                    day = cursor.getInt(5),
+                    paymentId = cursor.getInt(6),
+                    classificationId = cursor.getInt(7)
+                )
+            )
+        }
+        cursor.close()
+        return histories
     }
 
     override fun insertHistory(

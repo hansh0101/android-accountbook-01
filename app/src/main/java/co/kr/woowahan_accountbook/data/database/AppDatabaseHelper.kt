@@ -43,6 +43,10 @@ class AppDatabaseHelper @Inject constructor(
         }
     }
 
+    override fun onConfigure(db: SQLiteDatabase) {
+        db.setForeignKeyConstraintsEnabled(true)
+    }
+
     override fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // TODO - 추후 Migration 부분에 대한 코드를 작성해야 한다.
     }

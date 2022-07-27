@@ -68,6 +68,13 @@ class ClassificationDataSourceImpl @Inject constructor(
     }
 
     override fun updateClassification(id: Int, type: String, color: String, isIncome: Int) {
-        TODO("Not yet implemented")
+        val values = ContentValues().apply {
+            put("CLASSIFICATION_TYPE", type)
+            put("CLASSIFICATION_COLOR", color)
+            put("IS_INCOME", isIncome)
+        }
+        val selection = "_ID LIKE ?"
+        val selectionArgs = arrayOf("$id")
+        writableDatabase.update("CLASSIFICATION", values, selection, selectionArgs)
     }
 }

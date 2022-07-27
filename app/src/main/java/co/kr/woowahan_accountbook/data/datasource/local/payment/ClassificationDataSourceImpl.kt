@@ -10,7 +10,26 @@ class ClassificationDataSourceImpl @Inject constructor(
     private val writableDatabase: SQLiteDatabase
 ) : ClassificationDataSource {
     override fun getClassification(id: Int): ClassificationDto {
-        TODO("Not yet implemented")
+        val projection = arrayOf("_ID", "CLASSIFICATION_TYPE", "CLASSIFICATION_COLOR", "IS_INCOME")
+        val selection = "_ID = ?"
+        val selectionArgs = arrayOf("$id")
+        val cursor = readableDatabase.query(
+            "CLASSIFICATION",
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        ).apply { moveToFirst() }
+        val classification = ClassificationDto(
+            id = cursor.getInt(0),
+            classificationType = cursor.getString(1),
+            classificationColor = cursor.getString(2),
+            isIncome = cursor.getInt(3) == 1
+        )
+        cursor.close()
+        return classification
     }
 
     override fun getClassifications(): List<ClassificationDto> {

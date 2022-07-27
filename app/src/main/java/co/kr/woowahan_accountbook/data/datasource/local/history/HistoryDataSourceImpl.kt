@@ -115,7 +115,11 @@ class HistoryDataSourceImpl @Inject constructor(
         )
     }
 
-    override fun deleteHistory(id: Int) {
-        TODO("Not yet implemented")
+    override fun deleteHistories(ids: List<Int>) {
+        ids.forEach { id ->
+            val selection = "_ID LIKE ?"
+            val selectionArgs = arrayOf("$id")
+            writableDatabase.delete("HISTORY", selection, selectionArgs)
+        }
     }
 }

@@ -24,5 +24,5 @@ interface HistoryDataSource {
         paymentId: Int,
         classificationId: Int
     )
-    fun deleteHistory(id: Int)
+    fun deleteHistories(ids: List<Int>)
 }

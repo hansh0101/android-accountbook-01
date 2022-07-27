@@ -10,18 +10,16 @@ class PaymentDataSourceImpl @Inject constructor(
     private val writableDatabase: SQLiteDatabase
 ) : PaymentDataSource {
     override fun getPayment(id: Int): PaymentDto {
-        val projection = arrayOf("_ID", "PAYMENT_NAME")
         val selection = "_ID = ?"
         val selectionArgs = arrayOf("$id")
-        val sortOrder = "_ID ASC"
         val cursor = readableDatabase.query(
             "PAYMENT",
-            projection,
+            null,
             selection,
             selectionArgs,
             null,
             null,
-            sortOrder
+            null
         ).apply { moveToFirst() }
         val payment = PaymentDto(id = cursor.getInt(0), paymentName = cursor.getString(1))
         cursor.close()

@@ -13,4 +13,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="font_medium">
+        <item name="fontFamily">@font/ko_pub_world_dotum_pro</item>
+        <item name="fontWeight">500</item>
+    </style>
+
+    <style name="font_bold">
+        <item name="fontFamily">@font/ko_pub_world_dotum_pro</item>
+        <item name="fontWeight">700</item>
+    </style>
 </resources>

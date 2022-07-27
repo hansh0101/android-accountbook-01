@@ -23,13 +23,13 @@ class PaymentDataSourceImpl @Inject constructor(
             null,
             sortOrder
         ).apply { moveToFirst() }
-
-        return Payment(id = cursor.getInt(0), paymentName = cursor.getString(1))
+        val payment = Payment(id = cursor.getInt(0), paymentName = cursor.getString(1))
+        cursor.close()
+        return payment
     }
 
     override fun getPayments(): List<Payment> {
         val sortOrder = "_ID ASC"
-
         val cursor = readableDatabase.query(
             "PAYMENT",
             null,
@@ -39,12 +39,12 @@ class PaymentDataSourceImpl @Inject constructor(
             null,
             sortOrder
         )
-
-        val list = mutableListOf<Payment>()
+        val payments = mutableListOf<Payment>()
         while (cursor.moveToNext()) {
-            list.add(Payment(id = cursor.getInt(0), paymentName = cursor.getString(1)))
+            payments.add(Payment(id = cursor.getInt(0), paymentName = cursor.getString(1)))
         }
-        return list
+        cursor.close()
+        return payments
     }
 
     override fun insertPayment(name: String) {
@@ -55,6 +55,11 @@ class PaymentDataSourceImpl @Inject constructor(
     }
 
     override fun updatePayment(id: Int, name: String) {
-        TODO("Not yet implemented")
+        val values = ContentValues().apply {
+            put("PAYMENT_NAME", name)
+        }
+        val selection = "_ID LIKE ?"
+        val selectionArgs = arrayOf("$id")
+        writableDatabase.update("PAYMENT", values, selection, selectionArgs)
     }
 }

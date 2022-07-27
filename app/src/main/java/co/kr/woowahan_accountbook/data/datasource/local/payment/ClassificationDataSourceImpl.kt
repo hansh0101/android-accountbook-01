@@ -33,7 +33,29 @@ class ClassificationDataSourceImpl @Inject constructor(
     }
 
     override fun getClassifications(): List<ClassificationDto> {
-        TODO("Not yet implemented")
+        val sortOrder = "_ID ASC"
+        val cursor = readableDatabase.query(
+            "CLASSIFICATION",
+            null,
+            null,
+            null,
+            null,
+            null,
+            sortOrder
+        )
+        val classifications = mutableListOf<ClassificationDto>()
+        while (cursor.moveToNext()) {
+            classifications.add(
+                ClassificationDto(
+                    id = cursor.getInt(0),
+                    classificationType = cursor.getString(1),
+                    classificationColor = cursor.getString(2),
+                    isIncome = cursor.getInt(3) == 1
+                )
+            )
+        }
+        cursor.close()
+        return classifications
     }
 
     override fun insertClassification(type: String, color: String, isIncome: Int) {

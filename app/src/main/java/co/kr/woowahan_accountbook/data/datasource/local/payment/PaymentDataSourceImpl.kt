@@ -2,14 +2,14 @@ package co.kr.woowahan_accountbook.data.datasource.local.payment
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import co.kr.woowahan_accountbook.data.dto.Payment
+import co.kr.woowahan_accountbook.data.dto.PaymentDto
 import javax.inject.Inject
 
 class PaymentDataSourceImpl @Inject constructor(
     private val readableDatabase: SQLiteDatabase,
     private val writableDatabase: SQLiteDatabase
 ) : PaymentDataSource {
-    override fun getPayment(id: Int): Payment {
+    override fun getPayment(id: Int): PaymentDto {
         val projection = arrayOf("_ID", "PAYMENT_NAME")
         val selection = "_ID = ?"
         val selectionArgs = arrayOf("$id")
@@ -23,12 +23,12 @@ class PaymentDataSourceImpl @Inject constructor(
             null,
             sortOrder
         ).apply { moveToFirst() }
-        val payment = Payment(id = cursor.getInt(0), paymentName = cursor.getString(1))
+        val payment = PaymentDto(id = cursor.getInt(0), paymentName = cursor.getString(1))
         cursor.close()
         return payment
     }
 
-    override fun getPayments(): List<Payment> {
+    override fun getPayments(): List<PaymentDto> {
         val sortOrder = "_ID ASC"
         val cursor = readableDatabase.query(
             "PAYMENT",
@@ -39,9 +39,9 @@ class PaymentDataSourceImpl @Inject constructor(
             null,
             sortOrder
         )
-        val payments = mutableListOf<Payment>()
+        val payments = mutableListOf<PaymentDto>()
         while (cursor.moveToNext()) {
-            payments.add(Payment(id = cursor.getInt(0), paymentName = cursor.getString(1)))
+            payments.add(PaymentDto(id = cursor.getInt(0), paymentName = cursor.getString(1)))
         }
         cursor.close()
         return payments

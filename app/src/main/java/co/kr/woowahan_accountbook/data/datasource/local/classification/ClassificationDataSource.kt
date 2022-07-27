@@ -1,4 +1,4 @@
-package co.kr.woowahan_accountbook.data.datasource.local.payment
+package co.kr.woowahan_accountbook.data.datasource.local.classification
 
 import co.kr.woowahan_accountbook.data.dto.ClassificationDto
 

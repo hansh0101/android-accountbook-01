@@ -1,8 +1,8 @@
 package co.kr.woowahan_accountbook.di
 
 import android.database.sqlite.SQLiteDatabase
-import co.kr.woowahan_accountbook.data.datasource.local.payment.ClassificationDataSource
-import co.kr.woowahan_accountbook.data.datasource.local.payment.ClassificationDataSourceImpl
+import co.kr.woowahan_accountbook.data.datasource.local.classification.ClassificationDataSource
+import co.kr.woowahan_accountbook.data.datasource.local.classification.ClassificationDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

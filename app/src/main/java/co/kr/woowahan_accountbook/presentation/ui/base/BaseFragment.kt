@@ -55,8 +55,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     }
 
     override fun onDestroyView() {
-        _binding = null
         super.onDestroyView()
+        _binding = null
         Timber.tag(TAG).i("onDestroyView")
     }
 

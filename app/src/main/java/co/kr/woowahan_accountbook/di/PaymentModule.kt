@@ -17,6 +17,5 @@ object PaymentModule {
     fun providePaymentDatasource(
         @ReadableDatabase readableDatabase: SQLiteDatabase,
         @WritableDatabase writableDatabase: SQLiteDatabase
-    ): PaymentDataSource =
-        PaymentDataSourceImpl(readableDatabase, writableDatabase)
+    ): PaymentDataSource = PaymentDataSourceImpl(readableDatabase, writableDatabase)
 }

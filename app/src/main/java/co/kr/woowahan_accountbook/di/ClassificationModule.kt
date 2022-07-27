@@ -17,6 +17,5 @@ object ClassificationModule {
     fun provideClassificationDataSource(
         @ReadableDatabase readableDatabase: SQLiteDatabase,
         @WritableDatabase writableDatabase: SQLiteDatabase
-    ): ClassificationDataSource =
-        ClassificationDataSourceImpl(readableDatabase, writableDatabase)
+    ): ClassificationDataSource = ClassificationDataSourceImpl(readableDatabase, writableDatabase)
 }

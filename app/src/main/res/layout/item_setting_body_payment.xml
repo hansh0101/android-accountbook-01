@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tv_body_classification"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="12dp"
-        android:fontFamily="@font/ko_pub_world_dotum_pro"
-        android:textColor="@color/purple_524d90"
-        android:textFontWeight="700"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="PaymentName" />
+    <data>
 
-    <View
-        android:id="@+id/v_underline"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/purple_66a79fcb"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/tv_body_classification"
-        app:layout_constraintStart_toStartOf="@id/tv_body_classification" />
+        <variable
+            name="payment"
+            type="co.kr.woowahan_accountbook.domain.entity.setting.SettingPayment" />
+    </data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_body_classification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="12dp"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:text="@{payment.paymentName}"
+            android:textColor="@color/purple_524d90"
+            android:textFontWeight="700"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="PaymentName" />
+
+        <View
+            android:id="@+id/v_underline"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/purple_66a79fcb"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_body_classification"
+            app:layout_constraintStart_toStartOf="@id/tv_body_classification" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

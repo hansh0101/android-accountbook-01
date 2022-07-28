@@ -23,4 +23,16 @@ class SettingRepositoryImpl @Inject constructor(
         withContext(coroutineDispatcher) {
             classificationDataSource.getClassificationsByType(isIncome)
         }
+
+    override suspend fun addPayment(name: String) {
+        withContext(coroutineDispatcher) {
+            paymentDataSource.insertPayment(name)
+        }
+    }
+
+    override suspend fun updatePayment(id: Int, name: String) {
+        withContext(coroutineDispatcher) {
+            paymentDataSource.updatePayment(id, name)
+        }
+    }
 }

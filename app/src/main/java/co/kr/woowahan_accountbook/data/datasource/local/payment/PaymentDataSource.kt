@@ -1,6 +1,6 @@
 package co.kr.woowahan_accountbook.data.datasource.local.payment
 
-import co.kr.woowahan_accountbook.data.dto.PaymentDto
+import co.kr.woowahan_accountbook.domain.entity.dto.PaymentDto
 
 interface PaymentDataSource {
     fun getPayment(id: Int): PaymentDto

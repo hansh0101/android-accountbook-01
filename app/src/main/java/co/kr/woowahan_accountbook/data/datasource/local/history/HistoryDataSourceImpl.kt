@@ -2,7 +2,7 @@ package co.kr.woowahan_accountbook.data.datasource.local.history
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import co.kr.woowahan_accountbook.data.dto.HistoryDto
+import co.kr.woowahan_accountbook.domain.entity.dto.HistoryDto
 import javax.inject.Inject
 
 class HistoryDataSourceImpl @Inject constructor(

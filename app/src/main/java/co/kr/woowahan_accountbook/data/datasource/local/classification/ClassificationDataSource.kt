@@ -1,6 +1,6 @@
 package co.kr.woowahan_accountbook.data.datasource.local.classification
 
-import co.kr.woowahan_accountbook.data.dto.ClassificationDto
+import co.kr.woowahan_accountbook.domain.entity.dto.ClassificationDto
 
 interface ClassificationDataSource {
     fun getClassification(id: Int): ClassificationDto

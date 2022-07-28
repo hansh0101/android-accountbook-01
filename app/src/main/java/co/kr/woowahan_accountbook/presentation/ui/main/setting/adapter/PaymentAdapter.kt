@@ -2,7 +2,7 @@ package co.kr.woowahan_accountbook.presentation.ui.main.setting.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import co.kr.woowahan_accountbook.data.dto.PaymentDto
+import co.kr.woowahan_accountbook.domain.entity.dto.PaymentDto
 
 class PaymentAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

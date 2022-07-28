@@ -2,7 +2,7 @@ package co.kr.woowahan_accountbook.data.datasource.local.classification
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import co.kr.woowahan_accountbook.data.dto.ClassificationDto
+import co.kr.woowahan_accountbook.domain.entity.dto.ClassificationDto
 import javax.inject.Inject
 
 class ClassificationDataSourceImpl @Inject constructor(

@@ -2,8 +2,6 @@ package co.kr.woowahan_accountbook.domain.usecase
 
 import co.kr.woowahan_accountbook.domain.entity.setting.SettingPayment
 import co.kr.woowahan_accountbook.domain.repository.setting.SettingRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SettingPaymentsUseCase @Inject constructor(

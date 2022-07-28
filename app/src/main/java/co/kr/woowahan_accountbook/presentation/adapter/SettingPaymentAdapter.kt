@@ -10,14 +10,18 @@ import co.kr.woowahan_accountbook.databinding.ItemSettingBodyPaymentBinding
 import co.kr.woowahan_accountbook.databinding.ItemSettingHeaderBinding
 import co.kr.woowahan_accountbook.domain.entity.setting.SettingPayment
 
-class SettingPaymentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SettingPaymentAdapter(
+    private val updatePayment: (SettingPayment) -> Unit,
+    private val addPayment: () -> Unit
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items = mutableListOf<SettingPayment>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             SettingPayment.Type.HEADER -> HeaderViewHolder.create(parent)
-            SettingPayment.Type.BODY -> BodyViewHolder.create(parent)
-            SettingPayment.Type.FOOTER -> FooterViewHolder.create(parent)
+            SettingPayment.Type.BODY -> BodyViewHolder.create(parent, updatePayment)
+            SettingPayment.Type.FOOTER -> FooterViewHolder.create(parent, addPayment)
             else -> throw IllegalArgumentException()
         }
     }
@@ -52,45 +56,51 @@ class SettingPaymentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class BodyViewHolder(private val binding: ItemSettingBodyPaymentBinding) :
+    class BodyViewHolder(
+        private val binding: ItemSettingBodyPaymentBinding,
+        private val updatePayment: (SettingPayment) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(payment: SettingPayment) {
             binding.payment = payment
             binding.root.setOnClickListener {
-                TODO("결제수단 수정하기 화면으로 이동")
+                updatePayment(payment)
             }
         }
 
         companion object Factory {
-            fun create(parent: ViewGroup): BodyViewHolder {
+            fun create(parent: ViewGroup, updatePayment: (SettingPayment) -> Unit): BodyViewHolder {
                 val binding = DataBindingUtil.inflate<ItemSettingBodyPaymentBinding>(
                     LayoutInflater.from(parent.context),
                     R.layout.item_setting_body_payment,
                     parent,
                     false
                 )
-                return BodyViewHolder(binding)
+                return BodyViewHolder(binding, updatePayment)
             }
         }
     }
 
-    class FooterViewHolder(private val binding: ItemSettingBodyAddBinding) :
+    class FooterViewHolder(
+        private val binding: ItemSettingBodyAddBinding,
+        private val addPayment: () -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind() {
             binding.tvBodyAdd.text = "결제수단 추가하기"
-            binding.ivPlus.setOnClickListener {
-                TODO("결제수단 추가 화면으로 이동시키기")
+            binding.root.setOnClickListener {
+                addPayment()
             }
         }
 
         companion object Factory {
-            fun create(parent: ViewGroup): FooterViewHolder {
+            fun create(parent: ViewGroup, addPayment: () -> Unit): FooterViewHolder {
                 val binding = ItemSettingBodyAddBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
-                return FooterViewHolder(binding)
+                return FooterViewHolder(binding, addPayment)
             }
         }
     }

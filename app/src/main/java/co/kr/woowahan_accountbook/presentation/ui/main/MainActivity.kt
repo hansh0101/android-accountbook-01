@@ -25,7 +25,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             add<SettingFragment>(R.id.fcv_main)
         }
         binding.bnvMain.setOnItemSelectedListener {
-            return@setOnItemSelectedListener when(it.itemId) {
+            return@setOnItemSelectedListener when (it.itemId) {
                 R.id.menu_history -> {
                     supportFragmentManager.commit {
                         replace<SettingFragment>(R.id.fcv_main)

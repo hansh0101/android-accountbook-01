@@ -2,7 +2,7 @@ package co.kr.woowahan_accountbook.data.datasource.local.classification
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import co.kr.woowahan_accountbook.data.dto.ClassificationDto
+import co.kr.woowahan_accountbook.domain.entity.dto.ClassificationDto
 import javax.inject.Inject
 
 class ClassificationDataSourceImpl @Inject constructor(
@@ -34,10 +34,38 @@ class ClassificationDataSourceImpl @Inject constructor(
     override fun getClassifications(): List<ClassificationDto> {
         val sortOrder = "_ID ASC"
         val cursor = readableDatabase.query(
+            "CLASSIFICATION",
             null,
             null,
             null,
             null,
+            null,
+            sortOrder
+        )
+        val classifications = mutableListOf<ClassificationDto>()
+        while (cursor.moveToNext()) {
+            classifications.add(
+                ClassificationDto(
+                    id = cursor.getInt(0),
+                    classificationType = cursor.getString(1),
+                    classificationColor = cursor.getString(2),
+                    isIncome = cursor.getInt(3) == 1
+                )
+            )
+        }
+        cursor.close()
+        return classifications
+    }
+
+    override fun getClassificationsByType(isIncome: Boolean): List<ClassificationDto> {
+        val sortOrder = "_ID ASC"
+        val selection = "IS_INCOME = ?"
+        val selectionArgs = if (isIncome) arrayOf("1") else arrayOf("0")
+        val cursor = readableDatabase.query(
+            "CLASSIFICATION",
+            null,
+            selection,
+            selectionArgs,
             null,
             null,
             sortOrder

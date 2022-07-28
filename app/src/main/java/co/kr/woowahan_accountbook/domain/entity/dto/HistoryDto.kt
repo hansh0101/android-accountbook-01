@@ -1,4 +1,4 @@
-package co.kr.woowahan_accountbook.data.dto
+package co.kr.woowahan_accountbook.domain.entity.dto
 
 data class HistoryDto(
     val id: Int,

@@ -2,7 +2,7 @@ package co.kr.woowahan_accountbook.data.datasource.local.payment
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import co.kr.woowahan_accountbook.data.dto.PaymentDto
+import co.kr.woowahan_accountbook.domain.entity.dto.PaymentDto
 import javax.inject.Inject
 
 class PaymentDataSourceImpl @Inject constructor(

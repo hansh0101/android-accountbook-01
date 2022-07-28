@@ -2,6 +2,8 @@ package co.kr.woowahan_accountbook.presentation.ui.main.setting
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import co.kr.woowahan_accountbook.R
@@ -9,7 +11,7 @@ import co.kr.woowahan_accountbook.databinding.FragmentSettingBinding
 import co.kr.woowahan_accountbook.presentation.adapter.SettingClassificationAdapter
 import co.kr.woowahan_accountbook.presentation.adapter.SettingPaymentAdapter
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseFragment
-import co.kr.woowahan_accountbook.presentation.viewmodel.SettingViewModel
+import co.kr.woowahan_accountbook.presentation.viewmodel.main.setting.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +22,22 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
         get() = R.layout.fragment_setting
 
     private val viewModel by viewModels<SettingViewModel>()
-    private val settingPaymentAdapter by lazy { SettingPaymentAdapter() }
+    private val settingPaymentAdapter by lazy {
+        SettingPaymentAdapter({
+            parentFragmentManager.commit {
+                replace<PaymentAddFragment>(R.id.fcv_main, null, Bundle().apply {
+                    putInt("_ID", it.id)
+                    putString("PAYMENT_NAME", it.paymentName)
+                })
+                addToBackStack(PaymentAddFragment::class.java.simpleName)
+            }
+        }, {
+            parentFragmentManager.commit {
+                replace<PaymentAddFragment>(R.id.fcv_main)
+                addToBackStack(PaymentAddFragment::class.java.simpleName)
+            }
+        })
+    }
     private val settingIncomeClassificationAdapter by lazy { SettingClassificationAdapter() }
     private val settingExpenditureClassificationAdapter by lazy { SettingClassificationAdapter() }
     private lateinit var adapter: ConcatAdapter
@@ -37,6 +54,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
             settingIncomeClassificationAdapter,
             settingExpenditureClassificationAdapter
         )
+        initSwipeRefreshLayout()
     }
 
     private fun observeData() {
@@ -48,6 +66,13 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
         }
         viewModel.expenditureClassification.observe(viewLifecycleOwner) {
             settingExpenditureClassificationAdapter.updateItems(it)
+        }
+    }
+
+    private fun initSwipeRefreshLayout() {
+        binding.srlSetting.setOnRefreshListener {
+            viewModel.getData()
+            binding.srlSetting.isRefreshing = false
         }
     }
 }

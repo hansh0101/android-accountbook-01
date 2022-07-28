@@ -7,6 +7,7 @@ import androidx.fragment.app.replace
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.ActivityMainBinding
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseActivity
+import co.kr.woowahan_accountbook.presentation.ui.main.setting.PaymentAddFragment
 import co.kr.woowahan_accountbook.presentation.ui.main.setting.SettingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +22,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun initView() {
+        binding.bnvMain.selectedItemId = R.id.menu_history
         supportFragmentManager.commit {
             add<SettingFragment>(R.id.fcv_main)
         }

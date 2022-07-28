@@ -34,10 +34,38 @@ class ClassificationDataSourceImpl @Inject constructor(
     override fun getClassifications(): List<ClassificationDto> {
         val sortOrder = "_ID ASC"
         val cursor = readableDatabase.query(
+            "CLASSIFICATION",
             null,
             null,
             null,
             null,
+            null,
+            sortOrder
+        )
+        val classifications = mutableListOf<ClassificationDto>()
+        while (cursor.moveToNext()) {
+            classifications.add(
+                ClassificationDto(
+                    id = cursor.getInt(0),
+                    classificationType = cursor.getString(1),
+                    classificationColor = cursor.getString(2),
+                    isIncome = cursor.getInt(3) == 1
+                )
+            )
+        }
+        cursor.close()
+        return classifications
+    }
+
+    override fun getClassificationsByType(isIncome: Boolean): List<ClassificationDto> {
+        val sortOrder = "_ID ASC"
+        val selection = "IS_INCOME = ?"
+        val selectionArgs = if (isIncome) arrayOf("1") else arrayOf("0")
+        val cursor = readableDatabase.query(
+            "CLASSIFICATION",
+            null,
+            selection,
+            selectionArgs,
             null,
             null,
             sortOrder

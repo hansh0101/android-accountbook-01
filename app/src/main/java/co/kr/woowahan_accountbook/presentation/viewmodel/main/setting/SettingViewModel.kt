@@ -1,4 +1,4 @@
-package co.kr.woowahan_accountbook.presentation.viewmodel
+package co.kr.woowahan_accountbook.presentation.viewmodel.main.setting
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,12 +26,16 @@ class SettingViewModel @Inject constructor(
     val expenditureClassification: LiveData<List<SettingClassification>> get() = _expenditureClassifications
 
     init {
+        getData()
+    }
+
+    fun getData() {
         getPayments()
         getClassificationsByType(true)
         getClassificationsByType(false)
     }
 
-    fun getPayments() {
+    private fun getPayments() {
         viewModelScope.launch {
             runCatching {
                 settingPaymentsUseCase()
@@ -43,7 +47,7 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun getClassificationsByType(isIncome: Boolean) {
+    private fun getClassificationsByType(isIncome: Boolean) {
         viewModelScope.launch {
             runCatching {
                 settingClassificationsUseCase(isIncome)

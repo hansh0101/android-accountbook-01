@@ -49,4 +49,6 @@
     <color name="yellow_e1ad60">#E1AD60</color>
     <color name="yellow_e29c4d">#E29C4D</color>
     <color name="yellow_e39145">#E39145</color>
+
+    <color name="yellow_disabled_80f5b853">#80F5B853</color>
 </resources>

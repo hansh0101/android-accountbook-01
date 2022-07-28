@@ -23,9 +23,4 @@ object SettingModule {
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher
     ): SettingRepository =
         SettingRepositoryImpl(paymentDataSource, classificationDataSource, coroutineDispatcher)
-
-    @Provides
-    fun provideSettingPaymentUseCase(
-        settingRepository: SettingRepository
-    ): SettingPaymentsUseCase = SettingPaymentsUseCase(settingRepository)
 }

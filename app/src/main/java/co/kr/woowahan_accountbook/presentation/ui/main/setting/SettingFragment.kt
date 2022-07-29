@@ -38,8 +38,46 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
             }
         })
     }
-    private val settingIncomeClassificationAdapter by lazy { SettingClassificationAdapter() }
-    private val settingExpenditureClassificationAdapter by lazy { SettingClassificationAdapter() }
+    private val settingIncomeClassificationAdapter by lazy {
+        SettingClassificationAdapter({
+            parentFragmentManager.commit {
+                replace<ClassificationAddFragment>(R.id.fcv_main, null, Bundle().apply {
+                    putInt("_ID", it.id)
+                    putString("CLASSIFICATION_TYPE", it.classificationType)
+                    putString("CLASSIFICATION_COLOR", it.classificationColor)
+                    putInt("IS_INCOME", if (it.isIncome) 1 else 0)
+                })
+                addToBackStack((ClassificationAddFragment::class.java.simpleName))
+            }
+        }, {
+            parentFragmentManager.commit {
+                replace<ClassificationAddFragment>(R.id.fcv_main, null, Bundle().apply {
+                    putInt("IS_INCOME", 1)
+                })
+                addToBackStack(ClassificationAddFragment::class.java.simpleName)
+            }
+        })
+    }
+    private val settingExpenditureClassificationAdapter by lazy {
+        SettingClassificationAdapter({
+            parentFragmentManager.commit {
+                replace<ClassificationAddFragment>(R.id.fcv_main, null, Bundle().apply {
+                    putInt("_ID", it.id)
+                    putString("CLASSIFICATION_TYPE", it.classificationType)
+                    putString("CLASSIFICATION_COLOR", it.classificationColor)
+                    putInt("IS_INCOME", if (it.isIncome) 1 else 0)
+                })
+                addToBackStack((ClassificationAddFragment::class.java.simpleName))
+            }
+        }, {
+            parentFragmentManager.commit {
+                replace<ClassificationAddFragment>(R.id.fcv_main, null, Bundle().apply {
+                    putInt("IS_INCOME", 0)
+                })
+                addToBackStack(ClassificationAddFragment::class.java.simpleName)
+            }
+        })
+    }
     private lateinit var adapter: ConcatAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,8 +89,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
     private fun initView() {
         binding.rvSetting.adapter = ConcatAdapter(
             settingPaymentAdapter,
-            settingIncomeClassificationAdapter,
-            settingExpenditureClassificationAdapter
+            settingExpenditureClassificationAdapter,
+            settingIncomeClassificationAdapter
         )
         initSwipeRefreshLayout()
     }
@@ -61,11 +99,11 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
         viewModel.payments.observe(viewLifecycleOwner) {
             settingPaymentAdapter.updateItems(it)
         }
-        viewModel.incomeClassifications.observe(viewLifecycleOwner) {
-            settingIncomeClassificationAdapter.updateItems(it)
-        }
         viewModel.expenditureClassification.observe(viewLifecycleOwner) {
             settingExpenditureClassificationAdapter.updateItems(it)
+        }
+        viewModel.incomeClassifications.observe(viewLifecycleOwner) {
+            settingIncomeClassificationAdapter.updateItems(it)
         }
     }
 

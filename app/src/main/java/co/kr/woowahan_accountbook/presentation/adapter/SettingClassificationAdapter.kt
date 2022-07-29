@@ -11,15 +11,18 @@ import co.kr.woowahan_accountbook.databinding.ItemSettingBodyClassificationBindi
 import co.kr.woowahan_accountbook.databinding.ItemSettingHeaderBinding
 import co.kr.woowahan_accountbook.domain.entity.setting.SettingClassification
 
-class SettingClassificationAdapter() :
+class SettingClassificationAdapter(
+    private val onClassificationClick: (SettingClassification) -> Unit,
+    private val onAddButtonClick: () -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items = mutableListOf<SettingClassification>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             SettingClassification.Type.HEADER -> HeaderViewHolder.create(parent)
-            SettingClassification.Type.BODY -> BodyViewHolder.create(parent)
-            SettingClassification.Type.FOOTER -> FooterViewHolder.create(parent)
+            SettingClassification.Type.BODY -> BodyViewHolder.create(parent, onClassificationClick)
+            SettingClassification.Type.FOOTER -> FooterViewHolder.create(parent, onAddButtonClick)
             else -> throw IllegalArgumentException()
         }
     }
@@ -54,45 +57,54 @@ class SettingClassificationAdapter() :
         }
     }
 
-    class BodyViewHolder(private val binding: ItemSettingBodyClassificationBinding) :
+    class BodyViewHolder(
+        private val binding: ItemSettingBodyClassificationBinding,
+        private val onClassificationClick: (SettingClassification) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(classification: SettingClassification) {
             binding.classification = classification
             binding.root.setOnClickListener {
-                TODO("카테고리 수정 화면으로 이동")
+                onClassificationClick(classification)
             }
         }
 
         companion object Factory {
-            fun create(parent: ViewGroup): BodyViewHolder {
+            fun create(
+                parent: ViewGroup,
+                onClassificationClick: (SettingClassification) -> Unit
+            ): BodyViewHolder {
                 val binding = DataBindingUtil.inflate<ItemSettingBodyClassificationBinding>(
                     LayoutInflater.from(parent.context),
                     R.layout.item_setting_body_classification,
                     parent,
                     false
                 )
-                return BodyViewHolder(binding)
+                return BodyViewHolder(binding, onClassificationClick)
             }
         }
     }
 
-    class FooterViewHolder(private val binding: ItemSettingBodyAddBinding) :
+    class FooterViewHolder(
+        private val binding: ItemSettingBodyAddBinding,
+        private val onAddButtonClick: () -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(type: Boolean) {
             binding.tvBodyAdd.text = if (type) "수입 카테고리 추가하기" else "지출 카테고리 추가하기"
-            binding.ivPlus.setOnClickListener {
-                TODO("카테고리 추가 화면으로 이동")
+            binding.root.setOnClickListener {
+                onAddButtonClick()
             }
         }
 
         companion object Factory {
-            fun create(parent: ViewGroup): FooterViewHolder {
+            fun create(parent: ViewGroup, onAddButtonClick: () -> Unit): FooterViewHolder {
                 val binding = ItemSettingBodyAddBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
-                return FooterViewHolder(binding)
+                return FooterViewHolder(binding, onAddButtonClick)
             }
         }
     }

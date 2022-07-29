@@ -6,6 +6,6 @@ interface ClassificationDataSource {
     fun getClassification(id: Int): ClassificationDto
     fun getClassifications(): List<ClassificationDto>
     fun getClassificationsByType(isIncome: Boolean): List<ClassificationDto>
-    fun insertClassification(type: String, color: String, isIncome: Int)
-    fun updateClassification(id: Int, type: String, color: String, isIncome: Int)
+    fun insertClassification(type: String, color: String, isIncome: Boolean)
+    fun updateClassification(id: Int, type: String, color: String, isIncome: Boolean)
 }

@@ -1,17 +1,13 @@
 package co.kr.woowahan_accountbook.presentation.ui.main.setting
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.FragmentPaymentAddBinding
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseFragment
 import co.kr.woowahan_accountbook.presentation.viewmodel.main.setting.PaymentAddViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class PaymentAddFragment : BaseFragment<FragmentPaymentAddBinding>() {
@@ -30,8 +26,6 @@ class PaymentAddFragment : BaseFragment<FragmentPaymentAddBinding>() {
             id = it.getInt("_ID")
             name = it.getString("PAYMENT_NAME")
         }
-        Timber.tag("zzz ID").i(id.toString())
-        Timber.tag("zzz PAYMENT_NAME").i(name)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,7 +52,6 @@ class PaymentAddFragment : BaseFragment<FragmentPaymentAddBinding>() {
 
     private fun observeData() {
         viewModel.isSuccess.observe(viewLifecycleOwner) {
-
             if (it) requireActivity().onBackPressed()
         }
     }

@@ -7,14 +7,14 @@
 
         <variable
             name="viewmodel"
-            type="co.kr.woowahan_accountbook.presentation.viewmodel.main.setting.PaymentAddViewModel" />
+            type="co.kr.woowahan_accountbook.presentation.viewmodel.main.setting.ClassificationAddViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white_f7f6f3"
-        tools:context=".presentation.ui.main.setting.PaymentAddFragment">
+        tools:context=".presentation.ui.main.setting.ClassificationAddFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/ab_setting"
@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/ko_pub_world_dotum_pro"
-                    android:text="결제 수단 추가하기"
+                    android:text="ㅇㅇ 카테고리 추가하기"
                     android:textColor="@color/purple_524d90"
                     android:textFontWeight="500"
                     android:textSize="18sp" />
@@ -91,6 +91,49 @@
             app:layout_constraintEnd_toEndOf="@id/et_name"
             app:layout_constraintStart_toStartOf="@id/tv_name"
             app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+        <TextView
+            android:id="@+id/tv_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:text="색상"
+            android:textColor="@color/light_purple_a79fcb"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/v_underline_name" />
+
+        <View
+            android:id="@+id/v_underline_color"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/purple_66a79fcb"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/tv_color"
+            app:layout_constraintStart_toStartOf="@id/tv_color"
+            app:layout_constraintTop_toBottomOf="@id/tv_color" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_classification_color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="@id/v_underline_color"
+            app:layout_constraintStart_toStartOf="@id/v_underline_color"
+            app:layout_constraintTop_toBottomOf="@id/v_underline_color"
+            app:spanCount="10" />
+
+        <View
+            android:id="@+id/v_underline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="21dp"
+            android:background="@color/light_purple_a79fcb"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/rv_classification_color" />
 
         <Button
             android:id="@+id/btn_add"

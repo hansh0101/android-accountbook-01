@@ -85,20 +85,20 @@ class ClassificationDataSourceImpl @Inject constructor(
         return classifications
     }
 
-    override fun insertClassification(type: String, color: String, isIncome: Int) {
+    override fun insertClassification(type: String, color: String, isIncome: Boolean) {
         val values = ContentValues().apply {
             put("CLASSIFICATION_TYPE", type)
             put("CLASSIFICATION_COLOR", color)
-            put("IS_INCOME", isIncome)
+            put("IS_INCOME", if (isIncome) 1 else 0)
         }
         writableDatabase.insert("CLASSIFICATION", null, values)
     }
 
-    override fun updateClassification(id: Int, type: String, color: String, isIncome: Int) {
+    override fun updateClassification(id: Int, type: String, color: String, isIncome: Boolean) {
         val values = ContentValues().apply {
             put("CLASSIFICATION_TYPE", type)
             put("CLASSIFICATION_COLOR", color)
-            put("IS_INCOME", isIncome)
+            put("IS_INCOME", if (isIncome) 1 else 0)
         }
         val selection = "_ID LIKE ?"
         val selectionArgs = arrayOf("$id")

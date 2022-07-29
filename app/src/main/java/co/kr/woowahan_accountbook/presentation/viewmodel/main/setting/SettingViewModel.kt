@@ -31,8 +31,8 @@ class SettingViewModel @Inject constructor(
 
     fun getData() {
         getPayments()
-        getClassificationsByType(true)
         getClassificationsByType(false)
+        getClassificationsByType(true)
     }
 
     private fun getPayments() {

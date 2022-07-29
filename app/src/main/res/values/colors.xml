@@ -51,4 +51,39 @@
     <color name="yellow_e39145">#E39145</color>
 
     <color name="yellow_disabled_80f5b853">#80F5B853</color>
+    
+    <array name="expenditure_colors">
+        <item>@color/blue_4a6cc3</item>
+        <item>@color/blue_2e86c7</item>
+        <item>@color/blue_4ca1d3</item>
+        <item>@color/blue_48c2e9</item>
+        <item>@color/blue_6ed5eb</item>
+        <item>@color/green_9fe7c8</item>
+        <item>@color/green_94d3cc</item>
+        <item>@color/green_4cb8b8</item>
+        <item>@color/green_40b98d</item>
+        <item>@color/green_2fa488</item>
+        <item>@color/purple_625eba</item>
+        <item>@color/purple_817dce</item>
+        <item>@color/purple_9b7dce</item>
+        <item>@color/purple_b391eb</item>
+        <item>@color/purple_d092e2</item>
+        <item>@color/pink_f1b4ef</item>
+        <item>@color/pink_f4aee1</item>
+        <item>@color/pink_f396b8</item>
+        <item>@color/pink_dc5d7b</item>
+        <item>@color/pink_cb588f</item>
+    </array>
+    <array name="income_colors">
+        <item>@color/olive_9bd182</item>
+        <item>@color/olive_a3cb7a</item>
+        <item>@color/olive_b5cc7a</item>
+        <item>@color/olive_ccd67a</item>
+        <item>@color/olive_eae07c</item>
+        <item>@color/yellow_edcf65</item>
+        <item>@color/yellow_ebc374</item>
+        <item>@color/yellow_e1ad60</item>
+        <item>@color/yellow_e29c4d</item>
+        <item>@color/yellow_e39145</item>
+    </array>
 </resources>

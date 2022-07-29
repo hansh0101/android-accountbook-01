@@ -4,7 +4,7 @@ import co.kr.woowahan_accountbook.domain.entity.dto.HistoryDto
 
 interface HistoryDataSource {
     fun getHistory(id: Int): HistoryDto
-    fun getHistories(): List<HistoryDto>
+    fun getHistories(year: Int, month: Int): List<HistoryDto>
     fun insertHistory(
         amount: Int,
         description: String,
@@ -14,6 +14,7 @@ interface HistoryDataSource {
         paymentId: Int,
         classificationId: Int
     )
+
     fun updateHistory(
         id: Int,
         amount: Int,
@@ -24,5 +25,6 @@ interface HistoryDataSource {
         paymentId: Int,
         classificationId: Int
     )
+
     fun deleteHistories(ids: List<Int>)
 }

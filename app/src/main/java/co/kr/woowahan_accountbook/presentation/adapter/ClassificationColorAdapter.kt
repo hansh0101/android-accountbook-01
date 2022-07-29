@@ -32,10 +32,7 @@ class ClassificationColorAdapter(private val onColorClick: (Int) -> Unit) :
             binding.root.setBackgroundColor(colorInfo.color)
             binding.root.setOnClickListener { onColorClick(layoutPosition) }
             if (colorInfo.isSelected) {
-                binding.root.apply {
-                    scaleX = 1f
-                    scaleY = 1f
-                }
+                binding.root.animate().scaleX(1f).scaleY(1f).setDuration(1000L).start()
             } else {
                 binding.root.apply {
                     scaleX = 0.7f

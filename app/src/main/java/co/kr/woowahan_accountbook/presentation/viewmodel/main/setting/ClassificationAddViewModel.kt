@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.kr.woowahan_accountbook.domain.usecase.SettingClassificationAddUseCase
-import co.kr.woowahan_accountbook.domain.usecase.SettingClassificationUpdateUseCase
+import co.kr.woowahan_accountbook.domain.usecase.setting.SettingClassificationAddUseCase
+import co.kr.woowahan_accountbook.domain.usecase.setting.SettingClassificationUpdateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber

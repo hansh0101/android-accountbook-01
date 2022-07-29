@@ -1,37 +1,36 @@
-package co.kr.woowahan_accountbook.presentation.adapter
+package co.kr.woowahan_accountbook.presentation.adapter.setting
 
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.ItemSettingBodyAddBinding
-import co.kr.woowahan_accountbook.databinding.ItemSettingBodyClassificationBinding
+import co.kr.woowahan_accountbook.databinding.ItemSettingBodyPaymentBinding
 import co.kr.woowahan_accountbook.databinding.ItemSettingHeaderBinding
-import co.kr.woowahan_accountbook.domain.entity.setting.SettingClassification
+import co.kr.woowahan_accountbook.domain.entity.setting.SettingPayment
 
-class SettingClassificationAdapter(
-    private val onClassificationClick: (SettingClassification) -> Unit,
-    private val onAddButtonClick: () -> Unit
+class SettingPaymentAdapter(
+    private val updatePayment: (SettingPayment) -> Unit,
+    private val addPayment: () -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val items = mutableListOf<SettingClassification>()
+    private val items = mutableListOf<SettingPayment>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            SettingClassification.Type.HEADER -> HeaderViewHolder.create(parent)
-            SettingClassification.Type.BODY -> BodyViewHolder.create(parent, onClassificationClick)
-            SettingClassification.Type.FOOTER -> FooterViewHolder.create(parent, onAddButtonClick)
+            SettingPayment.Type.HEADER -> HeaderViewHolder.create(parent)
+            SettingPayment.Type.BODY -> BodyViewHolder.create(parent, updatePayment)
+            SettingPayment.Type.FOOTER -> FooterViewHolder.create(parent, addPayment)
             else -> throw IllegalArgumentException()
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is HeaderViewHolder -> holder.onBind(items[position].isIncome)
+            is HeaderViewHolder -> holder.onBind()
             is BodyViewHolder -> holder.onBind(items[position])
-            is FooterViewHolder -> holder.onBind(items[position].isIncome)
+            is FooterViewHolder -> holder.onBind()
         }
     }
 
@@ -41,8 +40,8 @@ class SettingClassificationAdapter(
 
     class HeaderViewHolder(private val binding: ItemSettingHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(type: Boolean) {
-            binding.tvHeaderTitle.text = if (type) "수입 카테고리" else "지출 카테고리"
+        fun onBind() {
+            binding.tvHeaderTitle.text = "결제수단"
         }
 
         companion object Factory {
@@ -58,58 +57,55 @@ class SettingClassificationAdapter(
     }
 
     class BodyViewHolder(
-        private val binding: ItemSettingBodyClassificationBinding,
-        private val onClassificationClick: (SettingClassification) -> Unit
+        private val binding: ItemSettingBodyPaymentBinding,
+        private val updatePayment: (SettingPayment) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(classification: SettingClassification) {
-            binding.classification = classification
+        fun onBind(payment: SettingPayment) {
+            binding.payment = payment
             binding.root.setOnClickListener {
-                onClassificationClick(classification)
+                updatePayment(payment)
             }
         }
 
         companion object Factory {
-            fun create(
-                parent: ViewGroup,
-                onClassificationClick: (SettingClassification) -> Unit
-            ): BodyViewHolder {
-                val binding = DataBindingUtil.inflate<ItemSettingBodyClassificationBinding>(
+            fun create(parent: ViewGroup, updatePayment: (SettingPayment) -> Unit): BodyViewHolder {
+                val binding = DataBindingUtil.inflate<ItemSettingBodyPaymentBinding>(
                     LayoutInflater.from(parent.context),
-                    R.layout.item_setting_body_classification,
+                    R.layout.item_setting_body_payment,
                     parent,
                     false
                 )
-                return BodyViewHolder(binding, onClassificationClick)
+                return BodyViewHolder(binding, updatePayment)
             }
         }
     }
 
     class FooterViewHolder(
         private val binding: ItemSettingBodyAddBinding,
-        private val onAddButtonClick: () -> Unit
+        private val addPayment: () -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(type: Boolean) {
-            binding.tvBodyAdd.text = if (type) "수입 카테고리 추가하기" else "지출 카테고리 추가하기"
+        fun onBind() {
+            binding.tvBodyAdd.text = "결제수단 추가하기"
             binding.root.setOnClickListener {
-                onAddButtonClick()
+                addPayment()
             }
         }
 
         companion object Factory {
-            fun create(parent: ViewGroup, onAddButtonClick: () -> Unit): FooterViewHolder {
+            fun create(parent: ViewGroup, addPayment: () -> Unit): FooterViewHolder {
                 val binding = ItemSettingBodyAddBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
-                return FooterViewHolder(binding, onAddButtonClick)
+                return FooterViewHolder(binding, addPayment)
             }
         }
     }
 
-    fun updateItems(newItems: List<SettingClassification>) {
+    fun updateItems(newItems: List<SettingPayment>) {
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()

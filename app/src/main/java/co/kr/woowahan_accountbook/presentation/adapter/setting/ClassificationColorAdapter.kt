@@ -1,4 +1,4 @@
-package co.kr.woowahan_accountbook.presentation.adapter
+package co.kr.woowahan_accountbook.presentation.adapter.setting
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

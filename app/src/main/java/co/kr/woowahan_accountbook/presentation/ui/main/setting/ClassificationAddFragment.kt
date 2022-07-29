@@ -6,7 +6,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.FragmentClassificationAddBinding
-import co.kr.woowahan_accountbook.presentation.adapter.ClassificationColorAdapter
+import co.kr.woowahan_accountbook.presentation.adapter.setting.ClassificationColorAdapter
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseFragment
 import co.kr.woowahan_accountbook.presentation.viewmodel.main.setting.ClassificationAddViewModel
 import dagger.hilt.android.AndroidEntryPoint

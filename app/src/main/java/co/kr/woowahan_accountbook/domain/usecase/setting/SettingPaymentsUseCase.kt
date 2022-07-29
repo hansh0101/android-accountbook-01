@@ -1,4 +1,4 @@
-package co.kr.woowahan_accountbook.domain.usecase
+package co.kr.woowahan_accountbook.domain.usecase.setting
 
 import co.kr.woowahan_accountbook.domain.entity.setting.SettingPayment
 import co.kr.woowahan_accountbook.domain.repository.setting.SettingRepository

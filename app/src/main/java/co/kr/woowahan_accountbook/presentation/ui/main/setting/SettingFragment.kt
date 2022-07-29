@@ -8,8 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.FragmentSettingBinding
-import co.kr.woowahan_accountbook.presentation.adapter.SettingClassificationAdapter
-import co.kr.woowahan_accountbook.presentation.adapter.SettingPaymentAdapter
+import co.kr.woowahan_accountbook.presentation.adapter.setting.SettingClassificationAdapter
+import co.kr.woowahan_accountbook.presentation.adapter.setting.SettingPaymentAdapter
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseFragment
 import co.kr.woowahan_accountbook.presentation.viewmodel.main.setting.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint

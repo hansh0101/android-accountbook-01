@@ -1,4 +1,4 @@
-package co.kr.woowahan_accountbook.data.repository
+package co.kr.woowahan_accountbook.data.repository.setting
 
 import co.kr.woowahan_accountbook.data.datasource.local.classification.ClassificationDataSource
 import co.kr.woowahan_accountbook.data.datasource.local.payment.PaymentDataSource

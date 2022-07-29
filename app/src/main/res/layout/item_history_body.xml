@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="history"
+            type="co.kr.woowahan_accountbook.domain.entity.history.HistoryItem" />
+
+        <import type="android.graphics.Color" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/tv_history_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_radius_100"
+            android:backgroundTint="@{Color.parseColor(history.classificationColor)}"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="@{history.classificationType}"
+            android:textColor="@color/white_ffffff"
+            android:textFontWeight="700"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.17"
+            tools:backgroundTint="@color/green_94d3cc"
+            tools:text="LABEL" />
+
+        <TextView
+            android:id="@+id/tv_history_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:textColor="@color/purple_524d90"
+            android:textFontWeight="700"
+            android:text="@{history.description}"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_history_category"
+            tools:text="스트리밍 정기 서비스 결제" />
+
+        <TextView
+            android:id="@+id/tv_history_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:textColor="@color/purple_524d90"
+            android:textFontWeight="500"
+            android:text="@{history.paymentName}"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="현대카드" />
+
+        <TextView
+            android:id="@+id/tv_history_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:textColor="@color/red_e75b3f"
+            android:textFontWeight="700"
+            android:text="@{history.isIncome == true ? history.amount + `원` : `-` + history.amount + `원`}"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_history_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="-10,900원" />
+
+        <View
+            android:id="@+id/v_underline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/purple_66a79fcb"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_history_description" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

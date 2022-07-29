@@ -8,5 +8,9 @@ data class HistoryDto(
     val month: Int,
     val day: Int,
     val paymentId: Int,
-    val classificationId: Int
+    val paymentName: String,
+    val classificationId: Int,
+    val classificationType: String,
+    val classificationColor: String,
+    val isIncome: Boolean
 )

@@ -10,17 +10,16 @@ class HistoryDataSourceImpl @Inject constructor(
     private val writableDatabase: SQLiteDatabase
 ) : HistoryDataSource {
     override fun getHistory(id: Int): HistoryDto {
-        val selection = "_ID = ?"
-        val selectionArgs = arrayOf("$id")
-        val cursor = readableDatabase.query(
-            "HISTORY",
-            null,
-            selection,
-            selectionArgs,
-            null,
-            null,
-            null
-        ).apply { moveToFirst() }
+        val query =
+            "SELECT HISTORY._ID, AMOUNT, DESCRIPTION, YEAR, MONTH, DAY, PAYMENT_ID, CLASSIFICATION_ID, PAYMENT_NAME, CLASSIFICATION_TYPE, CLASSIFICATION_COLOR, IS_INCOME " +
+                    "FROM HISTORY " +
+                    "INNER JOIN PAYMENT " +
+                    "ON PAYMENT_ID = PAYMENT._ID " +
+                    "INNER JOIN CLASSIFICATION " +
+                    "ON CLASSIFICATION_ID = CLASSIFICATION._ID " +
+                    "WHERE HISTORY._ID = $id"
+        val cursor = readableDatabase.rawQuery(query, null).apply { moveToFirst() }
+
         val history = HistoryDto(
             id = cursor.getInt(0),
             amount = cursor.getInt(1),
@@ -29,23 +28,27 @@ class HistoryDataSourceImpl @Inject constructor(
             month = cursor.getInt(4),
             day = cursor.getInt(5),
             paymentId = cursor.getInt(6),
-            classificationId = cursor.getInt(7)
+            classificationId = cursor.getInt(7),
+            paymentName = cursor.getString(8),
+            classificationType = cursor.getString(9),
+            classificationColor = cursor.getString(10),
+            isIncome = cursor.getInt(11) == 1
         )
         cursor.close()
         return history
     }
 
-    override fun getHistories(): List<HistoryDto> {
-        val sortOrder = "_ID ASC"
-        val cursor = readableDatabase.query(
-            "HISTORY",
-            null,
-            null,
-            null,
-            null,
-            null,
-            sortOrder
-        )
+    override fun getHistories(year: Int, month: Int): List<HistoryDto> {
+        val query =
+            "SELECT HISTORY._ID, AMOUNT, DESCRIPTION, YEAR, MONTH, DAY, PAYMENT_ID, CLASSIFICATION_ID, PAYMENT_NAME, CLASSIFICATION_TYPE, CLASSIFICATION_COLOR, IS_INCOME " +
+                    "FROM HISTORY " +
+                    "INNER JOIN PAYMENT " +
+                    "ON PAYMENT_ID = PAYMENT._ID " +
+                    "INNER JOIN CLASSIFICATION " +
+                    "ON CLASSIFICATION_ID = CLASSIFICATION._ID " +
+                    "WHERE YEAR = $year AND MONTH = $month " +
+                    "ORDER BY DAY desc, HISTORY._ID desc"
+        val cursor = readableDatabase.rawQuery(query, null)
         val histories = mutableListOf<HistoryDto>()
         while (cursor.moveToNext()) {
             histories.add(
@@ -57,7 +60,11 @@ class HistoryDataSourceImpl @Inject constructor(
                     month = cursor.getInt(4),
                     day = cursor.getInt(5),
                     paymentId = cursor.getInt(6),
-                    classificationId = cursor.getInt(7)
+                    classificationId = cursor.getInt(7),
+                    paymentName = cursor.getString(8),
+                    classificationType = cursor.getString(9),
+                    classificationColor = cursor.getString(10),
+                    isIncome = cursor.getInt(11) == 1
                 )
             )
         }

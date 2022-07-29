@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.kr.woowahan_accountbook.domain.entity.setting.SettingClassification
 import co.kr.woowahan_accountbook.domain.entity.setting.SettingPayment
-import co.kr.woowahan_accountbook.domain.usecase.SettingClassificationsUseCase
-import co.kr.woowahan_accountbook.domain.usecase.SettingPaymentsUseCase
+import co.kr.woowahan_accountbook.domain.usecase.setting.SettingClassificationsUseCase
+import co.kr.woowahan_accountbook.domain.usecase.setting.SettingPaymentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber

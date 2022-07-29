@@ -7,8 +7,10 @@ import androidx.fragment.app.replace
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.ActivityMainBinding
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseActivity
-import co.kr.woowahan_accountbook.presentation.ui.main.setting.PaymentAddFragment
+import co.kr.woowahan_accountbook.presentation.ui.main.calendar.CalendarFragment
+import co.kr.woowahan_accountbook.presentation.ui.main.history.HistoryFragment
 import co.kr.woowahan_accountbook.presentation.ui.main.setting.SettingFragment
+import co.kr.woowahan_accountbook.presentation.ui.main.statistics.StatisticsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,25 +26,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun initView() {
         binding.bnvMain.selectedItemId = R.id.menu_history
         supportFragmentManager.commit {
-            add<SettingFragment>(R.id.fcv_main)
+            add<HistoryFragment>(R.id.fcv_main)
         }
         binding.bnvMain.setOnItemSelectedListener {
             return@setOnItemSelectedListener when (it.itemId) {
                 R.id.menu_history -> {
                     supportFragmentManager.commit {
-                        replace<SettingFragment>(R.id.fcv_main)
+                        replace<HistoryFragment>(R.id.fcv_main)
                     }
                     true
                 }
                 R.id.menu_calendar -> {
                     supportFragmentManager.commit {
-                        replace<SettingFragment>(R.id.fcv_main)
+                        replace<CalendarFragment>(R.id.fcv_main)
                     }
                     true
                 }
                 R.id.menu_statistics -> {
                     supportFragmentManager.commit {
-                        replace<SettingFragment>(R.id.fcv_main)
+                        replace<StatisticsFragment>(R.id.fcv_main)
                     }
                     true
                 }

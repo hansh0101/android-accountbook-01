@@ -8,4 +8,6 @@ interface SettingRepository {
     suspend fun getClassificationsByType(isIncome: Boolean): List<ClassificationDto>
     suspend fun addPayment(name: String)
     suspend fun updatePayment(id: Int, name: String)
+    suspend fun addClassification(type: String, color: String, isIncome: Boolean)
+    suspend fun updateClassification(id: Int, type: String, color: String, isIncome: Boolean)
 }

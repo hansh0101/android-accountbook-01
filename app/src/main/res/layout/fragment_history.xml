@@ -52,10 +52,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_fab"
+            android:backgroundTint="@color/yellow_f5b853"
+            android:src="@drawable/ic_plus"
+            app:rippleColor="@color/white_ffffff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@null" />
+            app:tint="@color/white_ffffff" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -60,5 +60,11 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         viewModel.histories.observe(viewLifecycleOwner) {
             historyAdapter.updateItems(it)
         }
+        viewModel.isIncomeSelected.observe(viewLifecycleOwner) {
+            viewModel.getHistories(2022, 8)
+        }
+        viewModel.isExpenditureSelected.observe(viewLifecycleOwner) {
+            viewModel.getHistories(2022, 8)
+        }
     }
 }

@@ -1,6 +1,7 @@
 package co.kr.woowahan_accountbook.presentation.adapter.history
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +9,7 @@ import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.ItemHistoryBodyBinding
 import co.kr.woowahan_accountbook.databinding.ItemHistoryHeaderBinding
 import co.kr.woowahan_accountbook.domain.entity.history.HistoryItem
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,10 +41,27 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: HistoryItem, items: List<HistoryItem>) {
             binding.tvHeaderDate.text = "${item.month}월 ${item.day}일 ${setDayOfWeek(item)}"
-            binding.tvIncomeValue.text =
-                String.format("%,2d", items.filter { it.isIncome }.sumOf { it.amount }) + "원"
-            binding.tvExpenditureValue.text =
-                String.format("%,2d",items.filterNot { it.isIncome }.sumOf { it.amount }) + "원"
+
+            with(items.filter { it.isIncome }.sumOf { it.amount }) {
+                if (this == 0) {
+                    binding.tvIncomeLabel.visibility = View.GONE
+                    binding.tvIncomeValue.visibility = View.GONE
+                } else {
+                    binding.tvIncomeLabel.visibility = View.VISIBLE
+                    binding.tvIncomeValue.visibility = View.VISIBLE
+                    binding.tvIncomeValue.text = String.format("%,2d", this) + "원"
+                }
+            }
+            with(items.filterNot { it.isIncome }.sumOf { it.amount }) {
+                if(this == 0) {
+                    binding.tvExpenditureLabel.visibility = View.GONE
+                    binding.tvExpenditureValue.visibility = View.GONE
+                } else {
+                    binding.tvExpenditureLabel.visibility = View.VISIBLE
+                    binding.tvExpenditureValue.visibility = View.VISIBLE
+                    binding.tvExpenditureValue.text = String.format("%,2d", this) + "원"
+                }
+            }
         }
 
         private fun setDayOfWeek(item: HistoryItem): String {

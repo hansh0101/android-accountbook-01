@@ -26,7 +26,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getHistories(2022, 7)
+        viewModel.getHistories(2022, 8)
         initView()
         initOnClickListener()
         observeData()

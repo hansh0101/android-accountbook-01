@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.FragmentHistoryBinding
@@ -26,11 +28,21 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getHistories(2022, 7)
         initView()
+        initOnClickListener()
         observeData()
     }
 
     private fun initView() {
         binding.rvHistory.adapter = historyAdapter
+    }
+
+    private fun initOnClickListener() {
+        binding.fabAdd.setOnClickListener {
+            parentFragmentManager.commit {
+                replace<HistoryAddFragment>(R.id.fcv_main)
+                addToBackStack(HistoryAddFragment::class.java.simpleName)
+            }
+        }
     }
 
     private fun observeData() {

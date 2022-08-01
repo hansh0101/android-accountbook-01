@@ -51,4 +51,9 @@ class HistoryRepositoryImpl @Inject constructor(
         withContext(coroutineDispatcher) {
             classificationDataSource.getClassifications()
         }
+
+    override suspend fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean): Int =
+        withContext(coroutineDispatcher) {
+            historyDataSource.getTotalAmountByType(year, month, isIncome)
+        }
 }

@@ -19,8 +19,8 @@ class HistoriesUseCase @Inject constructor(
                     iterator.previous()
                     iterator.add(HistoryItem(HistoryItem.HEADER, data.year, data.month, data.day))
                     pivot = data.day
+                    iterator.next()
                 }
-                iterator.next()
             }
             iterator.previous()
             val data = iterator.next()

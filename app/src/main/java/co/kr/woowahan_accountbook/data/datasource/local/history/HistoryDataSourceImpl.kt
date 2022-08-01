@@ -144,7 +144,7 @@ class HistoryDataSourceImpl @Inject constructor(
                     "from HISTORY " +
                     "inner join CLASSIFICATION " +
                     "on CLASSIFICATION_ID = CLASSIFICATION._ID " +
-                    "where CLASSIFICATION.IS_INCOME = ${if (isIncome) 1 else 0}"
+                    "where YEAR = $year AND MONTH = $month AND CLASSIFICATION.IS_INCOME = ${if (isIncome) 1 else 0}"
         val cursor = readableDatabase.rawQuery(query, null).apply { moveToFirst() }
         return cursor.getInt(0)
     }

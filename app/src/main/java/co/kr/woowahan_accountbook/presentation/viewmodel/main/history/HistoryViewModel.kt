@@ -17,6 +17,12 @@ class HistoryViewModel @Inject constructor(
     private val historiesUseCase: HistoriesUseCase,
     private val historyTotalAmountByTypeUseCase: HistoryTotalAmountByTypeUseCase
 ) : ViewModel() {
+    private val _year = MutableLiveData<Int>()
+    val year: LiveData<Int> get() = _year
+
+    private val _month = MutableLiveData<Int>()
+    val month: LiveData<Int> get() = _month
+
     private val _isSuccess = MutableLiveData<Boolean>()
     val isSuccess: LiveData<Boolean> get() = _isSuccess
 
@@ -36,12 +42,35 @@ class HistoryViewModel @Inject constructor(
     private val _totalExpenditureAmount = MutableLiveData<Int>()
     val totalExpenditureAmount: LiveData<Int> get() = _totalExpenditureAmount
 
-    fun getHistories(year: Int, month: Int) {
+    fun setDate(year: Int, month: Int) {
+        _year.value = year
+        _month.value = month
+    }
+
+    fun setPreviousMonth() {
+        if (requireNotNull(month.value) == 1) {
+            _year.value = requireNotNull(year.value) - 1
+            _month.value = 12
+        } else {
+            _month.value = requireNotNull(month.value) - 1
+        }
+    }
+
+    fun setNextMonth() {
+        if (requireNotNull(month.value) == 12) {
+            _year.value = requireNotNull(year.value) + 1
+            _month.value = 1
+        } else {
+            _month.value = requireNotNull(month.value) + 1
+        }
+    }
+
+    fun getHistories() {
         viewModelScope.launch {
             runCatching {
                 historiesUseCase(
-                    year,
-                    month,
+                    requireNotNull(year.value),
+                    requireNotNull(month.value),
                     requireNotNull(isIncomeSelected.value),
                     requireNotNull(isExpenditureSelected.value)
                 )
@@ -55,14 +84,19 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean) {
+    fun getTotalAmountByType(isIncome: Boolean) {
         viewModelScope.launch {
             runCatching {
-                historyTotalAmountByTypeUseCase(year, month, isIncome)
+                historyTotalAmountByTypeUseCase(
+                    requireNotNull(year.value),
+                    requireNotNull(month.value),
+                    isIncome
+                )
             }.onSuccess {
                 _isSuccess.value = true
                 if (isIncome) _totalIncomeAmount.value = it
                 else _totalExpenditureAmount.value = it
+                Timber.tag("ㅎㅇ").i(it.toString())
             }.onFailure {
                 _isSuccess.value = false
                 Timber.e(it)

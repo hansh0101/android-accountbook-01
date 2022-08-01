@@ -30,16 +30,31 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <ImageView
+                    android:id="@+id/iv_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:src="@drawable/ic_left" />
+
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/ko_pub_world_dotum_pro"
-                    android:text="yyyy년 MM월"
+                    android:text="@{Integer.toString(viewmodel.year) + `년 ` + Integer.toString(viewmodel.month) + `월`}"
                     android:textColor="@color/purple_524d90"
                     android:textFontWeight="500"
                     android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/iv_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_right" />
 
             </androidx.appcompat.widget.Toolbar>
 

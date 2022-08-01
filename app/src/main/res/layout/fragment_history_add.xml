@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="co.kr.woowahan_accountbook.presentation.viewmodel.main.history.HistoryAddViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white_f7f6f3"
@@ -45,6 +46,42 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
+            android:id="@+id/tv_income"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rectangle_left_radius_10"
+            android:backgroundTint="@{viewmodel.isIncome ? @color/purple_524d90 : @color/light_purple_a79fcb}"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="수입"
+            android:textColor="@color/white_f7f6f3"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_expenditure"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ab_history_add" />
+
+        <TextView
+            android:id="@+id/tv_expenditure"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rectangle_right_radius_10"
+            android:backgroundTint="@{viewmodel.isIncome ? @color/light_purple_a79fcb : @color/purple_524d90}"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="지출"
+            android:textColor="@color/white_f7f6f3"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_income"
+            app:layout_constraintTop_toBottomOf="@id/ab_history_add" />
+
+        <TextView
             android:id="@+id/tv_date_label"
             android:layout_width="76dp"
             android:layout_height="wrap_content"
@@ -56,7 +93,7 @@
             android:textFontWeight="500"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ab_history_add" />
+            app:layout_constraintTop_toBottomOf="@id/tv_income" />
 
         <TextView
             android:id="@+id/tv_date_value"
@@ -152,10 +189,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="12dp"
-            android:dropDownVerticalOffset="50dp"
             android:background="@drawable/bg_spinner_history_add"
-            android:textSize="14sp"
+            android:dropDownVerticalOffset="50dp"
             android:popupBackground="@drawable/bg_spinner_popup"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_payment_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_payment_label"
@@ -192,10 +229,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="12dp"
-            android:dropDownVerticalOffset="50dp"
             android:background="@drawable/bg_spinner_history_add"
-            android:textSize="14sp"
+            android:dropDownVerticalOffset="50dp"
             android:popupBackground="@drawable/bg_spinner_popup"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_classification_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_classification_label"
@@ -238,10 +275,10 @@
             android:inputType="text"
             android:maxLength="20"
             android:padding="0dp"
+            android:text="@={viewmodel.description}"
             android:textColor="@color/purple_524d90"
             android:textColorHint="@color/light_purple_a79fcb"
             android:textFontWeight="700"
-            android:text="@={viewmodel.description}"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_description_label"
             app:layout_constraintEnd_toEndOf="parent"
@@ -266,10 +303,10 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="56dp"
             android:background="@drawable/rectangle_radius_14"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
             android:backgroundTint="@{viewmodel.buttonEnableFlag ? @color/yellow_f5b853 : @color/yellow_disabled_80f5b853}"
             android:clickable="@{viewmodel.buttonEnableFlag ? true : false}"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:paddingVertical="16dp"
             android:text="등록하기"
             android:textColor="@color/white_ffffff"

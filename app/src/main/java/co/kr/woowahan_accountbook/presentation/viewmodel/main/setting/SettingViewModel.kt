@@ -25,10 +25,6 @@ class SettingViewModel @Inject constructor(
     private val _expenditureClassifications = MutableLiveData<List<SettingClassification>>()
     val expenditureClassification: LiveData<List<SettingClassification>> get() = _expenditureClassifications
 
-    init {
-        getData()
-    }
-
     fun getData() {
         getPayments()
         getClassificationsByType(false)

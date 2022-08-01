@@ -13,20 +13,13 @@ class HistoriesUseCase @Inject constructor(
         }.toMutableList().apply {
             var pivot = 0
             val iterator = this.listIterator()
-            while (iterator.hasNext()) {
-                val data = iterator.next()
-                if(pivot != data.day) {
+            for(item in iterator) {
+                if(item.day != pivot) {
                     iterator.previous()
-                    iterator.add(HistoryItem(HistoryItem.HEADER, data.year, data.month, data.day))
-                    pivot = data.day
+                    iterator.add(HistoryItem(HistoryItem.HEADER, item.year, item.month, item.day))
                     iterator.next()
+                    pivot = item.day
                 }
-            }
-            iterator.previous()
-            val data = iterator.next()
-            if(pivot != data.day) {
-                iterator.previous()
-                iterator.add(HistoryItem(HistoryItem.HEADER, data.year, data.month, data.day))
             }
         }
     }

@@ -17,6 +17,9 @@ class HistoryAddViewModel @Inject constructor(
     private val historyClassificationsUseCase: HistoryClassificationsUseCase,
     private val historyInsertUseCase: HistoryInsertUseCase
 ) : ViewModel() {
+    private val _isIncome = MutableLiveData<Boolean>(true)
+    val isIncome: LiveData<Boolean> get() = _isIncome
+
     private val _date = MutableLiveData<String>("")
     val date: LiveData<String> get() = _date
     val amount = MutableLiveData<Int>(0)
@@ -61,10 +64,10 @@ class HistoryAddViewModel @Inject constructor(
         }
     }
 
-    fun getClassifications(isIncome: Boolean) {
+    fun getClassifications() {
         viewModelScope.launch {
             runCatching {
-                historyClassificationsUseCase(isIncome)
+                historyClassificationsUseCase(requireNotNull(isIncome.value))
             }.onSuccess {
                 _classifications.value = it
             }.onFailure {
@@ -83,6 +86,10 @@ class HistoryAddViewModel @Inject constructor(
 
     fun onSelectedClassificationItem(id: Int) {
         _classification.value = id
+    }
+
+    fun onClickHistoryType(isIncome: Boolean) {
+        _isIncome.value = isIncome
     }
 
     fun insertHistory() {
@@ -108,7 +115,6 @@ class HistoryAddViewModel @Inject constructor(
                 )
             }.onSuccess {
                 _isSuccess.value = true
-                Timber.i("success")
             }.onFailure {
                 _isSuccess.value = false
                 Timber.e(it)

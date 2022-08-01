@@ -40,9 +40,9 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun onBind(item: HistoryItem, items: List<HistoryItem>) {
             binding.tvHeaderDate.text = "${item.month}월 ${item.day}일 ${setDayOfWeek(item)}"
             binding.tvIncomeValue.text =
-                items.filter { it.isIncome }.sumOf { it.amount }.toString() + "원"
+                String.format("%,2d", items.filter { it.isIncome }.sumOf { it.amount }) + "원"
             binding.tvExpenditureValue.text =
-                items.filterNot { it.isIncome }.sumOf { it.amount }.toString() + "원"
+                String.format("%,2d",items.filterNot { it.isIncome }.sumOf { it.amount }) + "원"
         }
 
         private fun setDayOfWeek(item: HistoryItem): String {

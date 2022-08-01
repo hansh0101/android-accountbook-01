@@ -44,6 +44,7 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
         super.onViewCreated(view, savedInstanceState)
         binding.viewmodel = viewModel
         initView()
+        initOnClickListener()
         observeData()
     }
 
@@ -57,6 +58,15 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
         initPaymentSpinner()
         initClassificationSpinner()
         initDateValue()
+    }
+
+    private fun initOnClickListener() {
+        binding.tvIncome.setOnClickListener {
+            viewModel.onClickHistoryType(true)
+        }
+        binding.tvExpenditure.setOnClickListener {
+            viewModel.onClickHistoryType(false)
+        }
         binding.btnAdd.setOnClickListener {
             viewModel.insertHistory()
         }
@@ -65,13 +75,13 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
     private fun initData() {
         with(viewModel) {
             getPayments()
-            getClassifications(true)
+            getClassifications()
         }
     }
 
     private fun initToolbar() {
         with(binding.tbHistoryAdd) {
-            setNavigationIcon(co.kr.woowahan_accountbook.R.drawable.ic_back)
+            setNavigationIcon(R.drawable.ic_back)
             setNavigationOnClickListener {
                 requireActivity().onBackPressed()
             }
@@ -167,6 +177,10 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
 
     private fun observeData() {
         addTextChangedListener()
+
+        viewModel.isIncome.observe(viewLifecycleOwner) {
+            viewModel.getClassifications()
+        }
 
         viewModel.payments.observe(viewLifecycleOwner) {
             Timber.tag("payments size").i(it.size.toString())

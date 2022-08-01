@@ -129,4 +129,15 @@ class HistoryDataSourceImpl @Inject constructor(
             writableDatabase.delete("HISTORY", selection, selectionArgs)
         }
     }
+
+    override fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean): Int {
+        val query =
+            "select sum(AMOUNT) " +
+                    "from HISTORY " +
+                    "inner join CLASSIFICATION " +
+                    "on CLASSIFICATION_ID = CLASSIFICATION._ID " +
+                    "where CLASSIFICATION.IS_INCOME = ${if (isIncome) 1 else 0}"
+        val cursor = readableDatabase.rawQuery(query, null).apply { moveToFirst() }
+        return cursor.getInt(0)
+    }
 }

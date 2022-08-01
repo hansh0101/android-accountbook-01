@@ -1,5 +1,6 @@
 package co.kr.woowahan_accountbook.presentation.ui.main.history
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,6 +19,7 @@ import co.kr.woowahan_accountbook.presentation.ui.main.setting.ClassificationAdd
 import co.kr.woowahan_accountbook.presentation.ui.main.setting.PaymentAddFragment
 import co.kr.woowahan_accountbook.presentation.ui.widget.HistoryAddPaymentSpinner
 import co.kr.woowahan_accountbook.presentation.viewmodel.main.history.HistoryAddViewModel
+import co.kr.woowahan_accountbook.util.DateUtil
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -69,6 +71,33 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
         }
         binding.btnAdd.setOnClickListener {
             viewModel.insertHistory()
+        }
+        binding.tvDateValue.setOnClickListener {
+            openDatePickerDialog()
+        }
+    }
+
+    private fun openDatePickerDialog() {
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, month, day ->
+                viewModel.setDate(
+                    "${year}.${String.format("%02d", month + 1)}.${String.format("%02d", day)}"
+                )
+            },
+            DateUtil.date.split('.')[0].toInt(),
+            DateUtil.date.split('.')[1].toInt() - 1,
+            DateUtil.date.split('.')[0].toInt(),
+        )
+        val dateString = "20000101"
+        val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
+        val date: Date = simpleDateFormat.parse(dateString) as Date
+        val startDate = date.time
+        with(datePickerDialog) {
+            datePicker.minDate = startDate
+            datePicker.maxDate = System.currentTimeMillis()
+            setCanceledOnTouchOutside(false)
+            show()
         }
     }
 
@@ -159,11 +188,7 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
     }
 
     private fun initDateValue() {
-        val calendar = Calendar.getInstance()
-        val time = calendar.time
-        val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd.E요일")
-        val date = simpleDateFormat.format(time)
-        viewModel.setDate(date)
+        viewModel.setDate(DateUtil.date)
     }
 
     override fun onPopupWindowOpened(spinner: Spinner?) {

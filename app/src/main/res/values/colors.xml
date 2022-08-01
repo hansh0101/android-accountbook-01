@@ -51,6 +51,7 @@
     <color name="yellow_e39145">#E39145</color>
 
     <color name="yellow_disabled_80f5b853">#80F5B853</color>
+    <color name="green_4eaaba">#4EAABA</color>
     
     <array name="expenditure_colors">
         <item>@color/blue_4a6cc3</item>

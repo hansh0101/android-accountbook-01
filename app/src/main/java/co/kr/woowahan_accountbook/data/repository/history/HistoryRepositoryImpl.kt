@@ -17,9 +17,14 @@ class HistoryRepositoryImpl @Inject constructor(
     private val classificationDataSource: ClassificationDataSource,
     private val coroutineDispatcher: CoroutineDispatcher
 ) : HistoryRepository {
-    override suspend fun getHistories(year: Int, month: Int): List<HistoryDto> =
+    override suspend fun getHistories(
+        year: Int,
+        month: Int,
+        incomeFlag: Boolean,
+        expenditureFlag: Boolean
+    ): List<HistoryDto> =
         withContext(coroutineDispatcher) {
-            historyDataSource.getHistories(year, month)
+            historyDataSource.getHistories(year, month, incomeFlag, expenditureFlag)
         }
 
     override suspend fun getPayments(): List<PaymentDto> =

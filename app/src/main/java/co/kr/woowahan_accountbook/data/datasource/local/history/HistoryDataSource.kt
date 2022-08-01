@@ -27,4 +27,5 @@ interface HistoryDataSource {
     )
 
     fun deleteHistories(ids: List<Int>)
+    fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean): Int
 }

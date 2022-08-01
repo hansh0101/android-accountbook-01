@@ -18,4 +18,5 @@ interface HistoryRepository {
         paymentId: Int,
         classificationId: Int
     )
+    suspend fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean): Int
 }

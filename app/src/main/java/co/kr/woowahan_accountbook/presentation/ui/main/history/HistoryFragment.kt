@@ -1,5 +1,6 @@
 package co.kr.woowahan_accountbook.presentation.ui.main.history
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,11 @@ import co.kr.woowahan_accountbook.databinding.FragmentHistoryBinding
 import co.kr.woowahan_accountbook.presentation.adapter.history.HistoryAdapter
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseFragment
 import co.kr.woowahan_accountbook.presentation.viewmodel.main.history.HistoryViewModel
+import co.kr.woowahan_accountbook.util.DateUtil
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
@@ -28,9 +33,10 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewmodel = viewModel
         with(viewModel) {
-            getHistories(2022, 8)
-            getTotalAmountByType(2022, 8, true)
-            getTotalAmountByType(2022, 8, false)
+            setDate(DateUtil.date.split('.')[0].toInt(), DateUtil.date.split('.')[1].toInt())
+            getHistories()
+            getTotalAmountByType(true)
+            getTotalAmountByType(false)
         }
         initView()
         initOnClickListener()
@@ -54,6 +60,37 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         binding.layoutExpenditure.setOnClickListener {
             viewModel.onClickExpenditure()
         }
+        binding.ivLeft.setOnClickListener {
+            viewModel.setPreviousMonth()
+        }
+        binding.ivRight.setOnClickListener {
+            viewModel.setNextMonth()
+        }
+        binding.tvTitle.setOnClickListener {
+            openDatePickerDialog()
+        }
+    }
+
+    private fun openDatePickerDialog() {
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, month, _ ->
+                viewModel.setDate(year, month + 1)
+            },
+            requireNotNull(viewModel.year.value),
+            requireNotNull(viewModel.month.value) - 1,
+            1,
+        )
+        val dateString = "20000101"
+        val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
+        val date: Date = simpleDateFormat.parse(dateString) as Date
+        val startDate = date.time
+        with(datePickerDialog) {
+            datePicker.minDate = startDate
+            datePicker.maxDate = System.currentTimeMillis()
+            setCanceledOnTouchOutside(false)
+            show()
+        }
     }
 
     private fun observeData() {
@@ -61,10 +98,21 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
             historyAdapter.updateItems(it)
         }
         viewModel.isIncomeSelected.observe(viewLifecycleOwner) {
-            viewModel.getHistories(2022, 8)
+            viewModel.getHistories()
         }
         viewModel.isExpenditureSelected.observe(viewLifecycleOwner) {
-            viewModel.getHistories(2022, 8)
+            with(viewModel) {
+                getHistories()
+                getTotalAmountByType(true)
+                getTotalAmountByType(false)
+            }
+        }
+        viewModel.month.observe(viewLifecycleOwner) {
+            with(viewModel) {
+                getHistories()
+                getTotalAmountByType(true)
+                getTotalAmountByType(false)
+            }
         }
     }
 }

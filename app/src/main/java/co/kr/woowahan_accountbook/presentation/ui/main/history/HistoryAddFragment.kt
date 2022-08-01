@@ -136,7 +136,12 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
                             replace<ClassificationAddFragment>(
                                 R.id.fcv_main,
                                 null,
-                                Bundle().apply { putInt("IS_INCOME", 1) })
+                                Bundle().apply {
+                                    putInt(
+                                        "IS_INCOME",
+                                        if (requireNotNull(viewModel.isIncome.value)) 1 else 0
+                                    )
+                                })
                             addToBackStack(ClassificationAddFragment::class.java.simpleName)
                         }
                     } else {

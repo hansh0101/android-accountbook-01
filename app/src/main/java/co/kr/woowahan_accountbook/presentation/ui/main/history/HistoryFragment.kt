@@ -26,7 +26,12 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getHistories(2022, 8)
+        binding.viewmodel = viewModel
+        with(viewModel) {
+            getHistories(2022, 8)
+            getTotalAmountByType(2022, 8, true)
+            getTotalAmountByType(2022, 8, false)
+        }
         initView()
         initOnClickListener()
         observeData()
@@ -43,11 +48,23 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
                 addToBackStack(HistoryAddFragment::class.java.simpleName)
             }
         }
+        binding.layoutIncome.setOnClickListener {
+            viewModel.onClickIncomeButton()
+        }
+        binding.layoutExpenditure.setOnClickListener {
+            viewModel.onClickExpenditure()
+        }
     }
 
     private fun observeData() {
         viewModel.histories.observe(viewLifecycleOwner) {
             historyAdapter.updateItems(it)
+        }
+        viewModel.isIncomeSelected.observe(viewLifecycleOwner) {
+            viewModel.getHistories(2022, 8)
+        }
+        viewModel.isExpenditureSelected.observe(viewLifecycleOwner) {
+            viewModel.getHistories(2022, 8)
         }
     }
 }

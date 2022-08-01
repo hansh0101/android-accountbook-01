@@ -38,7 +38,15 @@ class HistoryDataSourceImpl @Inject constructor(
         return history
     }
 
-    override fun getHistories(year: Int, month: Int): List<HistoryDto> {
+    override fun getHistories(
+        year: Int,
+        month: Int,
+        incomeFlag: Boolean,
+        expenditureFlag: Boolean
+    ): List<HistoryDto> {
+        val income = if (incomeFlag) 1 else 0
+        val expenditure = if (expenditureFlag) 0 else 1
+        if (income == 0 && expenditure == 1) return listOf()
         val query =
             "SELECT HISTORY._ID, AMOUNT, DESCRIPTION, YEAR, MONTH, DAY, PAYMENT_ID, CLASSIFICATION_ID, PAYMENT_NAME, CLASSIFICATION_TYPE, CLASSIFICATION_COLOR, IS_INCOME " +
                     "FROM HISTORY " +
@@ -46,7 +54,7 @@ class HistoryDataSourceImpl @Inject constructor(
                     "ON PAYMENT_ID = PAYMENT._ID " +
                     "INNER JOIN CLASSIFICATION " +
                     "ON CLASSIFICATION_ID = CLASSIFICATION._ID " +
-                    "WHERE YEAR = $year AND MONTH = $month " +
+                    "WHERE YEAR = $year AND MONTH = $month AND (IS_INCOME = $income OR IS_INCOME = $expenditure) " +
                     "ORDER BY DAY desc, HISTORY._ID desc"
         val cursor = readableDatabase.rawQuery(query, null)
         val histories = mutableListOf<HistoryDto>()
@@ -128,5 +136,16 @@ class HistoryDataSourceImpl @Inject constructor(
             val selectionArgs = arrayOf("$id")
             writableDatabase.delete("HISTORY", selection, selectionArgs)
         }
+    }
+
+    override fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean): Int {
+        val query =
+            "select sum(AMOUNT) " +
+                    "from HISTORY " +
+                    "inner join CLASSIFICATION " +
+                    "on CLASSIFICATION_ID = CLASSIFICATION._ID " +
+                    "where CLASSIFICATION.IS_INCOME = ${if (isIncome) 1 else 0}"
+        val cursor = readableDatabase.rawQuery(query, null).apply { moveToFirst() }
+        return cursor.getInt(0)
     }
 }

@@ -6,7 +6,13 @@ import co.kr.woowahan_accountbook.domain.entity.dto.PaymentDto
 import co.kr.woowahan_accountbook.domain.entity.history.HistoryItem
 
 interface HistoryRepository {
-    suspend fun getHistories(year: Int, month: Int): List<HistoryDto>
+    suspend fun getHistories(
+        year: Int,
+        month: Int,
+        incomeFlag: Boolean,
+        expenditureFlag: Boolean
+    ): List<HistoryDto>
+
     suspend fun getPayments(): List<PaymentDto>
     suspend fun getClassifications(): List<ClassificationDto>
     suspend fun insertHistory(
@@ -18,4 +24,6 @@ interface HistoryRepository {
         paymentId: Int,
         classificationId: Int
     )
+
+    suspend fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean): Int
 }

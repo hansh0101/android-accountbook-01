@@ -39,9 +39,13 @@ class HistoryViewModel @Inject constructor(
     fun getHistories(year: Int, month: Int) {
         viewModelScope.launch {
             runCatching {
-                historiesUseCase(year, month)
+                historiesUseCase(
+                    year,
+                    month,
+                    requireNotNull(isIncomeSelected.value),
+                    requireNotNull(isExpenditureSelected.value)
+                )
             }.onSuccess {
-                Timber.tag("zzz").i(it.toString())
                 _histories.value = it
                 _isSuccess.value = true
             }.onFailure {

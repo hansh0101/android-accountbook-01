@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+        <variable
+            name="viewmodel"
+            type="co.kr.woowahan_accountbook.presentation.viewmodel.main.history.HistoryAddViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -52,20 +58,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ab_history_add" />
 
-        <EditText
-            android:id="@+id/et_date_value"
+        <TextView
+            android:id="@+id/tv_date_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="12dp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/ko_pub_world_dotum_pro"
-            android:hint="입력하세요"
-            android:inputType="text"
-            android:maxLength="5"
-            android:padding="0dp"
+            android:text="@{viewmodel.date}"
             android:textColor="@color/purple_524d90"
-            android:textColorHint="@color/light_purple_a79fcb"
             android:textFontWeight="700"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_date_label"
@@ -80,7 +82,7 @@
             android:layout_marginTop="8dp"
             android:background="@color/purple_66a79fcb"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="@id/et_date_value"
+            app:layout_constraintEnd_toEndOf="@id/tv_date_value"
             app:layout_constraintStart_toStartOf="@id/tv_date_label"
             app:layout_constraintTop_toBottomOf="@id/tv_date_label" />
 
@@ -108,7 +110,7 @@
             android:fontFamily="@font/ko_pub_world_dotum_pro"
             android:hint="입력하세요"
             android:inputType="number"
-            android:maxLength="5"
+            android:maxLength="11"
             android:padding="0dp"
             android:textColor="@color/purple_524d90"
             android:textColorHint="@color/light_purple_a79fcb"
@@ -234,11 +236,12 @@
             android:fontFamily="@font/ko_pub_world_dotum_pro"
             android:hint="입력하세요"
             android:inputType="text"
-            android:maxLength="5"
+            android:maxLength="20"
             android:padding="0dp"
             android:textColor="@color/purple_524d90"
             android:textColorHint="@color/light_purple_a79fcb"
             android:textFontWeight="700"
+            android:text="@={viewmodel.description}"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_description_label"
             app:layout_constraintEnd_toEndOf="parent"
@@ -265,6 +268,8 @@
             android:background="@drawable/rectangle_radius_14"
             android:minWidth="0dp"
             android:minHeight="0dp"
+            android:backgroundTint="@{viewmodel.buttonEnableFlag ? @color/yellow_f5b853 : @color/yellow_disabled_80f5b853}"
+            android:clickable="@{viewmodel.buttonEnableFlag ? true : false}"
             android:paddingVertical="16dp"
             android:text="등록하기"
             android:textColor="@color/white_ffffff"

@@ -102,7 +102,6 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     private fun observeData() {
         viewModel.histories.observe(viewLifecycleOwner) {
-            Timber.tag("zzzzz").i("observed")
             historyAdapter.updateItems(it)
             binding.ivRight.setImageResource(R.drawable.ic_right)
             binding.fabAdd.isVisible = true

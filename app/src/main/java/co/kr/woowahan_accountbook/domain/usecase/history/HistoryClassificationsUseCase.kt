@@ -11,7 +11,7 @@ class HistoryClassificationsUseCase @Inject constructor(
         return historyRepository.getClassifications().filter { it.isIncome == isIncome }
             .toMutableList().apply {
                 add(ClassificationDto(0, "추가하기", "", isIncome))
-                add(ClassificationDto(0, "선택하세요", "", isIncome))
+                add(0, ClassificationDto(0, "선택하세요", "", isIncome))
             }
     }
 }

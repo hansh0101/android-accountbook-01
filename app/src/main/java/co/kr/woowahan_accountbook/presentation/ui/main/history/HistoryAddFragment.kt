@@ -151,7 +151,6 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
         with(binding.spinnerClassificationValue) {
             setSpinnerEventsListener(this@HistoryAddFragment)
             adapter = historyClassificationSpinnerAdapter
-            setSelection(historyClassificationSpinnerAdapter.count - 1)
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -159,7 +158,7 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
                     position: Int,
                     id: Long
                 ) {
-                    if (position == historyClassificationSpinnerAdapter.count - 2) {
+                    if (position == historyClassificationSpinnerAdapter.count - 1) {
                         parentFragmentManager.commit {
                             replace<ClassificationAddFragment>(
                                 R.id.fcv_main,
@@ -222,7 +221,19 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
         viewModel.classifications.observe(viewLifecycleOwner) {
             Timber.tag("classifications size").i(it.size.toString())
             historyClassificationSpinnerAdapter.updateItems(it)
-            binding.spinnerClassificationValue.setSelection(it.size)
+            Timber.tag("classificationId index 앞").i(
+                historyClassificationSpinnerAdapter.indexOf(
+                    requireNotNull(viewModel.classification.value)
+                ).toString()
+            )
+            binding.spinnerClassificationValue.setSelection(
+                historyClassificationSpinnerAdapter.indexOf(requireNotNull(viewModel.classification.value))
+            )
+            Timber.tag("classificationId index 뒤").i(
+                historyClassificationSpinnerAdapter.indexOf(
+                    requireNotNull(viewModel.classification.value)
+                ).toString()
+            )
         }
 
         viewModel.amount.observe(viewLifecycleOwner) {
@@ -235,6 +246,10 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
 
         viewModel.payment.observe(viewLifecycleOwner) {
             Timber.tag("payment observe").i(it.toString())
+        }
+
+        viewModel.classification.observe(viewLifecycleOwner) {
+            Timber.tag("classificationId observed").i(it.toString())
         }
 
         viewModel.isSuccess.observe(viewLifecycleOwner) {

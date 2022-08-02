@@ -66,7 +66,12 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
             viewModel.onClickExpenditure()
         }
         binding.ivLeft.setOnClickListener {
-            viewModel.setPreviousMonth()
+            if(binding.fabAdd.isVisible) {
+                viewModel.setPreviousMonth()
+            } else {
+                viewModel.clearSelectedItems()
+                historyAdapter.notifyDataSetChanged()
+            }
         }
         binding.ivRight.setOnClickListener {
             if (binding.fabAdd.isVisible) {

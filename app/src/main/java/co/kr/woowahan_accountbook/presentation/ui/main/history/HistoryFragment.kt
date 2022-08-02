@@ -14,7 +14,6 @@ import co.kr.woowahan_accountbook.presentation.ui.base.BaseFragment
 import co.kr.woowahan_accountbook.presentation.viewmodel.main.history.HistoryViewModel
 import co.kr.woowahan_accountbook.util.DateUtil
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +35,10 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewmodel = viewModel
         with(viewModel) {
-            setDate(DateUtil.date.split('.')[0].toInt(), DateUtil.date.split('.')[1].toInt())
+            setDate(
+                DateUtil.getToday().split('.')[0].toInt(),
+                DateUtil.getToday().split('.')[1].toInt()
+            )
             getHistories()
             getTotalAmountByType(true)
             getTotalAmountByType(false)
@@ -64,7 +66,12 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
             viewModel.onClickExpenditure()
         }
         binding.ivLeft.setOnClickListener {
-            viewModel.setPreviousMonth()
+            if(binding.fabAdd.isVisible) {
+                viewModel.setPreviousMonth()
+            } else {
+                viewModel.clearSelectedItems()
+                historyAdapter.notifyDataSetChanged()
+            }
         }
         binding.ivRight.setOnClickListener {
             if (binding.fabAdd.isVisible) {

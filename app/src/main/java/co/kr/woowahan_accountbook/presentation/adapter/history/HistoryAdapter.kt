@@ -11,8 +11,7 @@ import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.ItemHistoryBodyBinding
 import co.kr.woowahan_accountbook.databinding.ItemHistoryHeaderBinding
 import co.kr.woowahan_accountbook.domain.entity.history.HistoryItem
-import java.text.SimpleDateFormat
-import java.util.*
+import co.kr.woowahan_accountbook.util.DateUtil
 
 class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -43,7 +42,7 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
     class HeaderViewHolder(private val binding: ItemHistoryHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: HistoryItem, items: List<HistoryItem>) {
-            binding.tvHeaderDate.text = "${item.month}월 ${item.day}일 ${setDayOfWeek(item)}"
+            binding.tvHeaderDate.text = "${item.month}월 ${item.day}일 ${getDayOfWeek(item)}"
 
             with(items.filter { it.isIncome }.sumOf { it.amount }) {
                 if (this == 0) {
@@ -67,14 +66,8 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
             }
         }
 
-        private fun setDayOfWeek(item: HistoryItem): String {
-            val yearString = item.year.toString()
-            val monthString = String.format("%02d", item.month)
-            val dayString = String.format("%02d", item.day)
-            val date = SimpleDateFormat("yyyyMMdd").parse(yearString + monthString + dayString)
-            val calendar = Calendar.getInstance()
-            calendar.time = date ?: throw IllegalArgumentException()
-            return DayOfWeek.stringOf(calendar.get(Calendar.DAY_OF_WEEK))
+        private fun getDayOfWeek(item: HistoryItem): String {
+            return DateUtil.getDayOfWeek(item.year, item.month, item.day)
         }
 
         companion object Factory {
@@ -97,10 +90,12 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: HistoryItem) {
             binding.history = item
+            binding.root.setBackgroundResource(R.color.white_f7f6f3)
             binding.root.setOnLongClickListener {
                 if (selectedItems.isEmpty()) {
                     onItemClick(item)
                     binding.ivChecked.isVisible = true
+                    binding.root.setBackgroundResource(R.color.white_ffffff)
                 }
                 true
             }
@@ -108,6 +103,11 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
                 if (selectedItems.isNotEmpty()) {
                     onItemClick(item)
                     binding.ivChecked.isVisible = selectedItems.find { it == item } != null
+                    if (selectedItems.find { it == item } != null) {
+                        binding.root.setBackgroundResource(R.color.white_ffffff)
+                    } else {
+                        binding.root.setBackgroundResource(R.color.white_f7f6f3)
+                    }
                 } else {
                     Toast.makeText(view.context, "해야지?", Toast.LENGTH_SHORT).show()
                 }
@@ -143,22 +143,5 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
     fun updateSelectedItems(newSelectedItems: List<HistoryItem>) {
         selectedItems.clear()
         selectedItems.addAll(newSelectedItems)
-    }
-
-    enum class DayOfWeek(val index: Int, val dayOfWeek: String) {
-        SUNDAY(0, "일요일"),
-        MONDAY(1, "월요일"),
-        TUESDAY(2, "화요일"),
-        WEDNESDAY(3, "수요일"),
-        THURSDAY(4, "목요일"),
-        FRIDAY(5, "금요일"),
-        SATURDAY(6, "토요일");
-
-        companion object {
-            fun stringOf(index: Int): String {
-                return values().find { it.index == index }?.dayOfWeek
-                    ?: throw IllegalArgumentException()
-            }
-        }
     }
 }

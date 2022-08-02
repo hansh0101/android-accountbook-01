@@ -1,6 +1,7 @@
 package co.kr.woowahan_accountbook.data.datasource.local.history
 
 import co.kr.woowahan_accountbook.domain.entity.dto.HistoryDto
+import co.kr.woowahan_accountbook.domain.entity.statistics.StatisticsItem
 
 interface HistoryDataSource {
     fun getHistory(id: Int): HistoryDto
@@ -34,4 +35,5 @@ interface HistoryDataSource {
 
     fun deleteHistories(ids: List<Int>)
     fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean): Int
+    fun getTotalAmountByClassificationType(year: Int, month: Int): List<StatisticsItem>
 }

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="co.kr.woowahan_accountbook.presentation.viewmodel.main.statistics.StatisticsViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +17,7 @@
         tools:context=".presentation.ui.main.statistics.StatisticsFragment">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/ab_setting"
+            android:id="@+id/ab_statistics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/layer_list_appbar"
@@ -18,10 +25,17 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tb_setting"
+                android:id="@+id/tb_history"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:src="@drawable/ic_left" />
 
                 <TextView
                     android:id="@+id/tv_title"
@@ -29,14 +43,81 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/ko_pub_world_dotum_pro"
-                    android:text="생활"
+                    android:text="@{Integer.toString(viewmodel.year) + `년 ` + Integer.toString(viewmodel.month) + `월`}"
                     android:textColor="@color/purple_524d90"
                     android:textFontWeight="500"
                     android:textSize="18sp" />
 
+                <ImageView
+                    android:id="@+id/iv_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_right" />
+
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            android:id="@+id/tv_total_amount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:text="이번 달 총 지출 금액"
+            android:textColor="@color/purple_524d90"
+            android:textFontWeight="700"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ab_statistics" />
+
+        <TextView
+            android:id="@+id/tv_total_amount_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:textColor="@color/red_e75b3f"
+            android:textFontWeight="700"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ab_statistics"
+            tools:text="834,640" />
+
+        <View
+            android:id="@+id/v_underline_total_amount"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/light_purple_a79fcb"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_total_amount_label" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart_statistics"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="53dp"
+            android:layout_marginTop="24dp"
+            android:visibility="invisible"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_underline_total_amount" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_statistics"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chart_statistics" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

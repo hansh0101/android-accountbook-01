@@ -31,8 +31,6 @@ class HistoryViewModel @Inject constructor(
     private val _histories = MutableLiveData<List<HistoryItem>>()
     val histories: LiveData<List<HistoryItem>> get() = _histories
 
-    //    private val _historiesShown = MutableLiveData<List<HistoryItem>>()
-//    val historiesShown: LiveData<List<HistoryItem>> get() = _historiesShown
     private val _historiesSelected = MutableLiveData<List<HistoryItem>>(listOf())
     val historiesSelected: LiveData<List<HistoryItem>> get() = _historiesSelected
 

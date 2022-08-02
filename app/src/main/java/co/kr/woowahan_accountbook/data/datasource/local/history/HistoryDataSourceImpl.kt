@@ -3,6 +3,7 @@ package co.kr.woowahan_accountbook.data.datasource.local.history
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import co.kr.woowahan_accountbook.domain.entity.dto.HistoryDto
+import co.kr.woowahan_accountbook.domain.entity.statistics.StatisticsItem
 import javax.inject.Inject
 
 class HistoryDataSourceImpl @Inject constructor(
@@ -140,12 +141,36 @@ class HistoryDataSourceImpl @Inject constructor(
 
     override fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean): Int {
         val query =
-            "select sum(AMOUNT) " +
-                    "from HISTORY " +
-                    "inner join CLASSIFICATION " +
-                    "on CLASSIFICATION_ID = CLASSIFICATION._ID " +
-                    "where YEAR = $year AND MONTH = $month AND CLASSIFICATION.IS_INCOME = ${if (isIncome) 1 else 0}"
+            "SELECT sum(AMOUNT) " +
+                    "FROM HISTORY " +
+                    "INNER JOIN CLASSIFICATION " +
+                    "ON CLASSIFICATION_ID = CLASSIFICATION._ID " +
+                    "WHERE YEAR = $year AND MONTH = $month AND CLASSIFICATION.IS_INCOME = ${if (isIncome) 1 else 0}"
         val cursor = readableDatabase.rawQuery(query, null).apply { moveToFirst() }
         return cursor.getInt(0)
+    }
+
+    override fun getTotalAmountByClassificationType(year: Int, month: Int): List<StatisticsItem> {
+        val query =
+            "SELECT sum(AMOUNT), CLASSIFICATION_TYPE, CLASSIFICATION_COLOR " +
+                    "FROM HISTORY " +
+                    "INNER JOIN CLASSIFICATION " +
+                    "ON CLASSIFICATION_ID = CLASSIFICATION._ID " +
+                    "WHERE YEAR = $year AND MONTH = $month AND CLASSIFICATION.IS_INCOME = 0 " +
+                    "GROUP BY CLASSIFICATION_ID " +
+                    "ORDER BY sum(AMOUNT) desc"
+        val cursor = readableDatabase.rawQuery(query, null)
+        val statisticsItems = mutableListOf<StatisticsItem>()
+        while (cursor.moveToNext()) {
+            statisticsItems.add(
+                StatisticsItem(
+                    amount = cursor.getInt(0),
+                    classificationType = cursor.getString(1),
+                    classificationColor = cursor.getString(2)
+                )
+            )
+        }
+        cursor.close()
+        return statisticsItems
     }
 }

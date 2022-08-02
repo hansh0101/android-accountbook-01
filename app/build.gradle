@@ -55,12 +55,15 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:2.42"
 
     // ktx
-    implementation 'androidx.activity:activity-ktx:1.5.0'
-    implementation 'androidx.fragment:fragment-ktx:1.5.0'
+    implementation 'androidx.activity:activity-ktx:1.5.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.1'
 
     // ConcatAdapter
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     // SwipeRefreshLayout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    // MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

@@ -90,10 +90,12 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: HistoryItem) {
             binding.history = item
+            binding.root.setBackgroundResource(R.color.white_f7f6f3)
             binding.root.setOnLongClickListener {
                 if (selectedItems.isEmpty()) {
                     onItemClick(item)
                     binding.ivChecked.isVisible = true
+                    binding.root.setBackgroundResource(R.color.white_ffffff)
                 }
                 true
             }
@@ -101,6 +103,11 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
                 if (selectedItems.isNotEmpty()) {
                     onItemClick(item)
                     binding.ivChecked.isVisible = selectedItems.find { it == item } != null
+                    if (selectedItems.find { it == item } != null) {
+                        binding.root.setBackgroundResource(R.color.white_ffffff)
+                    } else {
+                        binding.root.setBackgroundResource(R.color.white_f7f6f3)
+                    }
                 } else {
                     Toast.makeText(view.context, "해야지?", Toast.LENGTH_SHORT).show()
                 }

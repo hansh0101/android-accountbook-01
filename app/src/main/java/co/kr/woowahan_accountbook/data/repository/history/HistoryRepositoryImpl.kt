@@ -61,4 +61,10 @@ class HistoryRepositoryImpl @Inject constructor(
         withContext(coroutineDispatcher) {
             historyDataSource.getTotalAmountByType(year, month, isIncome)
         }
+
+    override suspend fun deleteHistories(ids: List<Int>) {
+        withContext(coroutineDispatcher) {
+            historyDataSource.deleteHistories(ids)
+        }
+    }
 }

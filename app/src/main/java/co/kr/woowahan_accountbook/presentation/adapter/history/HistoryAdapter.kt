@@ -3,23 +3,26 @@ package co.kr.woowahan_accountbook.presentation.adapter.history
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.ItemHistoryBodyBinding
 import co.kr.woowahan_accountbook.databinding.ItemHistoryHeaderBinding
 import co.kr.woowahan_accountbook.domain.entity.history.HistoryItem
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items = mutableListOf<HistoryItem>()
+    private val selectedItems = mutableListOf<HistoryItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             HistoryItem.Type.HEADER -> HeaderViewHolder.create(parent)
-            HistoryItem.Type.BODY -> BodyViewHolder.create(parent)
+            HistoryItem.Type.BODY -> BodyViewHolder.create(parent, onItemClick, selectedItems)
             else -> throw IllegalArgumentException()
         }
     }
@@ -53,7 +56,7 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
             with(items.filterNot { it.isIncome }.sumOf { it.amount }) {
-                if(this == 0) {
+                if (this == 0) {
                     binding.tvExpenditureLabel.visibility = View.GONE
                     binding.tvExpenditureValue.visibility = View.GONE
                 } else {
@@ -86,21 +89,47 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class BodyViewHolder(private val binding: ItemHistoryBodyBinding) :
+    class BodyViewHolder(
+        private val binding: ItemHistoryBodyBinding,
+        private val onItemClick: (HistoryItem) -> Unit,
+        private val selectedItems: List<HistoryItem>
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: HistoryItem) {
             binding.history = item
+            binding.root.setOnLongClickListener {
+                if (selectedItems.isEmpty()) {
+                    onItemClick(item)
+                    binding.ivChecked.isVisible = true
+                }
+                true
+            }
+            binding.root.setOnClickListener { view ->
+                if (selectedItems.isNotEmpty()) {
+                    onItemClick(item)
+                    binding.ivChecked.isVisible = selectedItems.find { it == item } != null
+                } else {
+                    Toast.makeText(view.context, "해야지?", Toast.LENGTH_SHORT).show()
+                }
+            }
+            if (selectedItems.isEmpty()) {
+                binding.ivChecked.isVisible = false
+            }
         }
 
         companion object Factory {
-            fun create(parent: ViewGroup): BodyViewHolder {
+            fun create(
+                parent: ViewGroup,
+                onItemClick: (HistoryItem) -> Unit,
+                selectedItems: List<HistoryItem>
+            ): BodyViewHolder {
                 val binding = DataBindingUtil.inflate<ItemHistoryBodyBinding>(
                     LayoutInflater.from(parent.context),
                     R.layout.item_history_body,
                     parent,
                     false
                 )
-                return BodyViewHolder(binding)
+                return BodyViewHolder(binding, onItemClick, selectedItems)
             }
         }
     }
@@ -109,6 +138,11 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
+    }
+
+    fun updateSelectedItems(newSelectedItems: List<HistoryItem>) {
+        selectedItems.clear()
+        selectedItems.addAll(newSelectedItems)
     }
 
     enum class DayOfWeek(val index: Int, val dayOfWeek: String) {

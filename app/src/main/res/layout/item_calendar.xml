@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@drawable/rectangle_calendar"
+        android:backgroundTint="@color/white_f7f6f3"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/tv_income_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:textColor="@color/green_4eaaba"
+            android:textFontWeight="500"
+            android:textSize="8sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1,822,480" />
+
+        <TextView
+            android:id="@+id/tv_expenditure_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:textColor="@color/red_e75b3f"
+            android:textFontWeight="500"
+            android:textSize="8sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_income_value"
+            tools:text="-9,500" />
+
+        <TextView
+            android:id="@+id/tv_total_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:textColor="@color/purple_524d90"
+            android:textFontWeight="500"
+            android:textSize="8sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_expenditure_value"
+            tools:text="1,812,980" />
+
+        <TextView
+            android:id="@+id/tv_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:textColor="@color/purple_524d90"
+            android:textFontWeight="700"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_total_value"
+            app:layout_constraintVertical_bias="1"
+            tools:text="9" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

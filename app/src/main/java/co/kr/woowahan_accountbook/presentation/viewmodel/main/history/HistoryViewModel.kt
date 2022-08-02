@@ -121,6 +121,10 @@ class HistoryViewModel @Inject constructor(
         _historiesSelected.value = list
     }
 
+    fun clearSelectedItems() {
+        _historiesSelected.value = listOf()
+    }
+
     fun deleteSelectedItems() {
         val ids = requireNotNull(historiesSelected.value).map { it.id }
         viewModelScope.launch {

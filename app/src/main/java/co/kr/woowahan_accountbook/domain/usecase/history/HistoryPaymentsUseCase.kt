@@ -10,6 +10,6 @@ class HistoryPaymentsUseCase @Inject constructor(
     suspend operator fun invoke(): List<PaymentDto> =
         historyRepository.getPayments().toMutableList().apply {
             add(PaymentDto(0, "추가하기"))
-            add(PaymentDto(0, "선택하세요"))
+            add(0, PaymentDto(0, "선택하세요"))
         }
 }

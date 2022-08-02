@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.kr.woowahan_accountbook.domain.entity.history.HistoryItem
+import co.kr.woowahan_accountbook.domain.usecase.history.HistoriesDeleteUseCase
 import co.kr.woowahan_accountbook.domain.usecase.history.HistoriesUseCase
 import co.kr.woowahan_accountbook.domain.usecase.history.HistoryTotalAmountByTypeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     private val historiesUseCase: HistoriesUseCase,
-    private val historyTotalAmountByTypeUseCase: HistoryTotalAmountByTypeUseCase
+    private val historyTotalAmountByTypeUseCase: HistoryTotalAmountByTypeUseCase,
+    private val historyDeleteUseCase: HistoriesDeleteUseCase
 ) : ViewModel() {
     private val _year = MutableLiveData<Int>()
     val year: LiveData<Int> get() = _year
@@ -28,8 +30,11 @@ class HistoryViewModel @Inject constructor(
 
     private val _histories = MutableLiveData<List<HistoryItem>>()
     val histories: LiveData<List<HistoryItem>> get() = _histories
-    private val _historiesShown = MutableLiveData<List<HistoryItem>>()
-    val historiesShown: LiveData<List<HistoryItem>> get() = _historiesShown
+
+    //    private val _historiesShown = MutableLiveData<List<HistoryItem>>()
+//    val historiesShown: LiveData<List<HistoryItem>> get() = _historiesShown
+    private val _historiesSelected = MutableLiveData<List<HistoryItem>>(listOf())
+    val historiesSelected: LiveData<List<HistoryItem>> get() = _historiesSelected
 
     private val _isIncomeSelected = MutableLiveData<Boolean>(true)
     val isIncomeSelected: LiveData<Boolean> get() = _isIncomeSelected
@@ -96,7 +101,6 @@ class HistoryViewModel @Inject constructor(
                 _isSuccess.value = true
                 if (isIncome) _totalIncomeAmount.value = it
                 else _totalExpenditureAmount.value = it
-                Timber.tag("ㅎㅇ").i(it.toString())
             }.onFailure {
                 _isSuccess.value = false
                 Timber.e(it)
@@ -110,5 +114,29 @@ class HistoryViewModel @Inject constructor(
 
     fun onClickExpenditure() {
         _isExpenditureSelected.value = !requireNotNull(isExpenditureSelected.value)
+    }
+
+    fun updateSelectedItems(item: HistoryItem) {
+        val list = requireNotNull(historiesSelected.value).toMutableList()
+        if(list.find { it == item } == null) list.add(item)
+        else list.remove(item)
+        _historiesSelected.value = list
+    }
+
+    fun deleteSelectedItems() {
+        val ids = requireNotNull(historiesSelected.value).map { it.id }
+        viewModelScope.launch {
+            runCatching {
+                historyDeleteUseCase(ids)
+            }.onSuccess {
+                _historiesSelected.value = listOf()
+                getHistories()
+                getTotalAmountByType(true)
+                getTotalAmountByType(false)
+                Timber.i("success")
+            }.onFailure {
+                Timber.e(it)
+            }
+        }
     }
 }

@@ -85,9 +85,9 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
                     "${year}.${String.format("%02d", month + 1)}.${String.format("%02d", day)}"
                 )
             },
-            DateUtil.date.split('.')[0].toInt(),
-            DateUtil.date.split('.')[1].toInt() - 1,
-            DateUtil.date.split('.')[0].toInt(),
+            DateUtil.getToday().split('.')[0].toInt(),
+            DateUtil.getToday().split('.')[1].toInt() - 1,
+            DateUtil.getToday().split('.')[0].toInt(),
         )
         val dateString = "20000101"
         val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
@@ -188,7 +188,7 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
     }
 
     private fun initDateValue() {
-        viewModel.setDate(DateUtil.date)
+        viewModel.setDate(DateUtil.getToday())
     }
 
     override fun onPopupWindowOpened(spinner: Spinner?) {

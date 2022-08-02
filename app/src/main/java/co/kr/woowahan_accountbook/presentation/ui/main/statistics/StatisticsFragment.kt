@@ -34,7 +34,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
         super.onViewCreated(view, savedInstanceState)
         with(viewModel) {
             binding.viewmodel = this
-            setDate(DateUtil.date.split('.')[0].toInt(), DateUtil.date.split('.')[1].toInt())
+            setDate(DateUtil.getToday().split('.')[0].toInt(), DateUtil.getToday().split('.')[1].toInt())
             getStatistics()
         }
         initView()

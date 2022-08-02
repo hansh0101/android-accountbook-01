@@ -98,8 +98,8 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
         fun onBind(item: HistoryItem) {
             binding.history = item
             binding.root.setOnLongClickListener {
-                onItemClick(item)
-                if (selectedItems.isNotEmpty()) {
+                if (selectedItems.isEmpty()) {
+                    onItemClick(item)
                     binding.ivChecked.isVisible = true
                 }
                 true

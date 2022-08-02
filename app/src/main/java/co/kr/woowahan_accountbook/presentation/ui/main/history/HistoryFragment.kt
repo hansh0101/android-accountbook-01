@@ -2,9 +2,8 @@ package co.kr.woowahan_accountbook.presentation.ui.main.history
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
@@ -27,7 +26,11 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         get() = R.layout.fragment_history
 
     private val viewModel by viewModels<HistoryViewModel>()
-    private val historyAdapter by lazy { HistoryAdapter() }
+    private val historyAdapter by lazy {
+        HistoryAdapter {
+            viewModel.updateSelectedItems(it)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,7 +67,11 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
             viewModel.setPreviousMonth()
         }
         binding.ivRight.setOnClickListener {
-            viewModel.setNextMonth()
+            if (binding.fabAdd.isVisible) {
+                viewModel.setNextMonth()
+            } else {
+                viewModel.deleteSelectedItems()
+            }
         }
         binding.tvTitle.setOnClickListener {
             openDatePickerDialog()
@@ -95,7 +102,10 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     private fun observeData() {
         viewModel.histories.observe(viewLifecycleOwner) {
+            Timber.tag("zzzzz").i("observed")
             historyAdapter.updateItems(it)
+            binding.ivRight.setImageResource(R.drawable.ic_right)
+            binding.fabAdd.isVisible = true
         }
         viewModel.isIncomeSelected.observe(viewLifecycleOwner) {
             viewModel.getHistories()
@@ -112,6 +122,16 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
                 getHistories()
                 getTotalAmountByType(true)
                 getTotalAmountByType(false)
+            }
+        }
+        viewModel.historiesSelected.observe(viewLifecycleOwner) {
+            historyAdapter.updateSelectedItems(it)
+            if (it.isEmpty()) {
+                binding.ivRight.setImageResource(R.drawable.ic_right)
+                binding.fabAdd.isVisible = true
+            } else {
+                binding.ivRight.setImageResource(R.drawable.ic_trash)
+                binding.fabAdd.isVisible = false
             }
         }
     }

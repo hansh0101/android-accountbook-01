@@ -1,5 +1,6 @@
 package co.kr.woowahan_accountbook.presentation.ui.main.statistics
 
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -16,6 +17,8 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
@@ -49,6 +52,31 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
         }
         binding.ivRight.setOnClickListener {
             viewModel.setNextMonth()
+        }
+        binding.tvTitle.setOnClickListener {
+            openDatePickerDialog()
+        }
+    }
+
+    private fun openDatePickerDialog() {
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, month, _ ->
+                viewModel.setDate(year, month + 1)
+            },
+            requireNotNull(viewModel.year.value),
+            requireNotNull(viewModel.month.value) - 1,
+            1,
+        )
+        val dateString = "20000101"
+        val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
+        val date: Date = simpleDateFormat.parse(dateString) as Date
+        val startDate = date.time
+        with(datePickerDialog) {
+            datePicker.minDate = startDate
+            datePicker.maxDate = System.currentTimeMillis()
+            setCanceledOnTouchOutside(false)
+            show()
         }
     }
 

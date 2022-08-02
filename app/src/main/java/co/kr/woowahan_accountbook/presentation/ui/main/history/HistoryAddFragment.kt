@@ -121,7 +121,6 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
         with(binding.spinnerPaymentValue) {
             setSpinnerEventsListener(this@HistoryAddFragment)
             adapter = historyPaymentSpinnerAdapter
-            setSelection(historyPaymentSpinnerAdapter.count - 1)
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -129,7 +128,7 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
                     position: Int,
                     id: Long
                 ) {
-                    if (position == historyPaymentSpinnerAdapter.count - 2) {
+                    if (position == historyPaymentSpinnerAdapter.count - 1) {
                         parentFragmentManager.commit {
                             replace<PaymentAddFragment>(R.id.fcv_main)
                             addToBackStack(PaymentAddFragment::class.java.simpleName)
@@ -215,7 +214,9 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
         viewModel.payments.observe(viewLifecycleOwner) {
             Timber.tag("payments size").i(it.size.toString())
             historyPaymentSpinnerAdapter.updateItems(it)
-            binding.spinnerPaymentValue.setSelection(it.size)
+            binding.spinnerPaymentValue.setSelection(
+                historyPaymentSpinnerAdapter.indexOf(requireNotNull(viewModel.payment.value))
+            )
         }
 
         viewModel.classifications.observe(viewLifecycleOwner) {

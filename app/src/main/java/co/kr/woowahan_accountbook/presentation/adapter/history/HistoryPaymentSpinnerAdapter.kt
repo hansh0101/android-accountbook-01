@@ -12,7 +12,7 @@ import timber.log.Timber
 
 class HistoryPaymentSpinnerAdapter : BaseAdapter() {
     private var items = listOf<PaymentDto>(
-        PaymentDto(0, "추가하기"), PaymentDto(0, "선택하세요")
+        PaymentDto(0, "선택하세요"), PaymentDto(0, "추가하기")
     )
 
     override fun getCount(): Int = if (items.isEmpty()) 0 else items.size
@@ -30,9 +30,9 @@ class HistoryPaymentSpinnerAdapter : BaseAdapter() {
 
         Timber.tag("getDropDownView").i(position.toString())
         binding.tvLabel.text = getItem(position).paymentName
-        if (position == count - 1) {
+        if (position == 0) {
             binding.root.layoutParams.height = 1
-        } else if (position == count - 2) {
+        } else if (position == count - 1) {
             binding.ivPlus.isVisible = true
         }
         return binding.root
@@ -45,7 +45,7 @@ class HistoryPaymentSpinnerAdapter : BaseAdapter() {
             false
         )
         Timber.tag("getView").i(position.toString())
-        if (position == items.size - 1) {
+        if (position == 0) {
             with(binding.tvLabel) {
                 hint = items[position].paymentName
                 setHintTextColor(resources.getColor(R.color.light_purple_a79fcb, null))
@@ -57,11 +57,16 @@ class HistoryPaymentSpinnerAdapter : BaseAdapter() {
     }
 
     override fun isEnabled(position: Int): Boolean {
-        return position != count - 1
+        return position != 0
     }
 
     fun updateItems(newItems: List<PaymentDto>) {
         items = newItems
         notifyDataSetChanged()
+    }
+
+    fun indexOf(id: Int): Int {
+        return if(id == 0)  0
+        else items.indices.find { items[it].id == id } ?: 0
     }
 }

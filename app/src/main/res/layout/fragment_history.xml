@@ -8,6 +8,8 @@
         <variable
             name="viewmodel"
             type="co.kr.woowahan_accountbook.presentation.viewmodel.main.history.HistoryViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -114,6 +116,7 @@
                     android:textColor="@color/white_f7f6f3"
                     android:textFontWeight="500"
                     android:textSize="12sp"
+                    android:visibility="@{viewmodel.totalIncomeAmount == null ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_income_label"
                     app:layout_constraintTop_toTopOf="parent"
@@ -177,6 +180,7 @@
                     android:textColor="@color/white_f7f6f3"
                     android:textFontWeight="500"
                     android:textSize="12sp"
+                    android:visibility="@{viewmodel.totalExpenditureAmount == null ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_expenditure_label"
                     app:layout_constraintTop_toTopOf="parent"

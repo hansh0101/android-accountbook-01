@@ -16,7 +16,8 @@ class PaymentAddViewModel @Inject constructor(
     private val settingPaymentAddUseCase: SettingPaymentAddUseCase,
     private val settingPaymentUpdateUseCase: SettingPaymentUpdateUseCase
 ) : ViewModel() {
-    val name = MutableLiveData<String>()
+    val name = MutableLiveData<String>("")
+    val id = MutableLiveData<Int>(-1)
     private val _isSuccess = MutableLiveData<Boolean>()
     val isSuccess: LiveData<Boolean> get() = _isSuccess
 
@@ -33,10 +34,10 @@ class PaymentAddViewModel @Inject constructor(
         }
     }
 
-    fun updatePayment(id: Int) {
+    fun updatePayment() {
         viewModelScope.launch {
             runCatching {
-                settingPaymentUpdateUseCase(id, requireNotNull(name.value))
+                settingPaymentUpdateUseCase(requireNotNull(id.value), requireNotNull(name.value))
             }.onSuccess {
                 _isSuccess.value = true
             }.onFailure {

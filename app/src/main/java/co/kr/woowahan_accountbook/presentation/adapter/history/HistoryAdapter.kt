@@ -3,7 +3,6 @@ package co.kr.woowahan_accountbook.presentation.adapter.history
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +12,10 @@ import co.kr.woowahan_accountbook.databinding.ItemHistoryHeaderBinding
 import co.kr.woowahan_accountbook.domain.entity.history.HistoryItem
 import co.kr.woowahan_accountbook.util.DateUtil
 
-class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
+class HistoryAdapter(
+    private val onItemSelect: (HistoryItem) -> Unit,
+    private val onItemClick: (HistoryItem) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items = mutableListOf<HistoryItem>()
     private val selectedItems = mutableListOf<HistoryItem>()
@@ -21,7 +23,12 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             HistoryItem.Type.HEADER -> HeaderViewHolder.create(parent)
-            HistoryItem.Type.BODY -> BodyViewHolder.create(parent, onItemClick, selectedItems)
+            HistoryItem.Type.BODY -> BodyViewHolder.create(
+                parent,
+                onItemSelect,
+                onItemClick,
+                selectedItems
+            )
             else -> throw IllegalArgumentException()
         }
     }
@@ -84,6 +91,7 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
 
     class BodyViewHolder(
         private val binding: ItemHistoryBodyBinding,
+        private val onItemSelect: (HistoryItem) -> Unit,
         private val onItemClick: (HistoryItem) -> Unit,
         private val selectedItems: List<HistoryItem>
     ) :
@@ -93,7 +101,7 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
             binding.root.setBackgroundResource(R.color.white_f7f6f3)
             binding.root.setOnLongClickListener {
                 if (selectedItems.isEmpty()) {
-                    onItemClick(item)
+                    onItemSelect(item)
                     binding.ivChecked.isVisible = true
                     binding.root.setBackgroundResource(R.color.white_ffffff)
                 }
@@ -101,7 +109,7 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
             }
             binding.root.setOnClickListener { view ->
                 if (selectedItems.isNotEmpty()) {
-                    onItemClick(item)
+                    onItemSelect(item)
                     binding.ivChecked.isVisible = selectedItems.find { it == item } != null
                     if (selectedItems.find { it == item } != null) {
                         binding.root.setBackgroundResource(R.color.white_ffffff)
@@ -109,7 +117,7 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
                         binding.root.setBackgroundResource(R.color.white_f7f6f3)
                     }
                 } else {
-                    Toast.makeText(view.context, "해야지?", Toast.LENGTH_SHORT).show()
+                    onItemClick(item)
                 }
             }
             if (selectedItems.isEmpty()) {
@@ -120,6 +128,7 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
         companion object Factory {
             fun create(
                 parent: ViewGroup,
+                onItemSelect: (HistoryItem) -> Unit,
                 onItemClick: (HistoryItem) -> Unit,
                 selectedItems: List<HistoryItem>
             ): BodyViewHolder {
@@ -129,7 +138,7 @@ class HistoryAdapter(private val onItemClick: (HistoryItem) -> Unit) :
                     parent,
                     false
                 )
-                return BodyViewHolder(binding, onItemClick, selectedItems)
+                return BodyViewHolder(binding, onItemSelect, onItemClick, selectedItems)
             }
         }
     }

@@ -26,4 +26,14 @@ interface HistoryRepository {
 
     suspend fun getTotalAmountByType(year: Int, month: Int, isIncome: Boolean): Int
     suspend fun deleteHistories(ids: List<Int>)
+    suspend fun updateHistory(
+        id: Int,
+        amount: Int,
+        description: String,
+        year: Int,
+        month: Int,
+        day: Int,
+        paymentId: Int,
+        classificationId: Int
+    )
 }

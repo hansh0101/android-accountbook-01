@@ -28,6 +28,8 @@ class CalendarViewModel @Inject constructor(
 
     private val _calendarItems = MutableLiveData<List<CalendarItem>>()
     val calendarItems: LiveData<List<CalendarItem>> get() = _calendarItems
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
 
     fun setDate(year: Int, month: Int) {
         _year.value = year
@@ -55,6 +57,7 @@ class CalendarViewModel @Inject constructor(
     fun getCalendarItems() {
         viewModelScope.launch {
             runCatching {
+                _isLoading.value = true
                 calendarUseCase(
                     requireNotNull(year.value),
                     requireNotNull(month.value)
@@ -66,6 +69,8 @@ class CalendarViewModel @Inject constructor(
                 _total.value = requireNotNull(income.value) + requireNotNull(expenditure.value)
             }.onFailure {
                 Timber.e(it)
+            }.also {
+                _isLoading.value = false
             }
         }
     }

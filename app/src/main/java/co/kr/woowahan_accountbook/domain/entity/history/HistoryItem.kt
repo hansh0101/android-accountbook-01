@@ -1,6 +1,7 @@
 package co.kr.woowahan_accountbook.domain.entity.history
 
 import co.kr.woowahan_accountbook.domain.entity.dto.HistoryDto
+import java.io.Serializable
 
 data class HistoryItem(
     val type: Int,
@@ -16,7 +17,7 @@ data class HistoryItem(
     val classificationType: String,
     val classificationColor: String,
     val isIncome: Boolean
-) {
+): Serializable {
     constructor(type: Int, year: Int, month: Int, day: Int) : this(
         type, 0, 0, "", year, month, day, 0, "", 0, "", "", false
     )

@@ -67,4 +67,28 @@ class HistoryRepositoryImpl @Inject constructor(
             historyDataSource.deleteHistories(ids)
         }
     }
+
+    override suspend fun updateHistory(
+        id: Int,
+        amount: Int,
+        description: String,
+        year: Int,
+        month: Int,
+        day: Int,
+        paymentId: Int,
+        classificationId: Int
+    ) {
+        withContext(coroutineDispatcher) {
+            historyDataSource.updateHistory(
+                id,
+                amount,
+                description,
+                year,
+                month,
+                day,
+                paymentId,
+                classificationId
+            )
+        }
+    }
 }

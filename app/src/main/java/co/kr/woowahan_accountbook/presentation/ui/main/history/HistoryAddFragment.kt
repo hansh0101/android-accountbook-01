@@ -12,6 +12,7 @@ import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.FragmentHistoryAddBinding
+import co.kr.woowahan_accountbook.domain.entity.history.HistoryItem
 import co.kr.woowahan_accountbook.presentation.adapter.history.HistoryClassificationSpinnerAdapter
 import co.kr.woowahan_accountbook.presentation.adapter.history.HistoryPaymentSpinnerAdapter
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseFragment
@@ -41,10 +42,17 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
     }
 
     private val viewModel by viewModels<HistoryAddViewModel>()
+    private var item: HistoryItem? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        item = arguments?.getSerializable("ITEM") as? HistoryItem
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewmodel = viewModel
+        item?.let { viewModel.setItem(it) }
         initView()
         initOnClickListener()
         observeData()
@@ -60,6 +68,13 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
         initPaymentSpinner()
         initClassificationSpinner()
         initDateValue()
+        initAmountValue()
+    }
+
+    private fun initAmountValue() {
+        if (item != null) {
+            binding.etAmountValue.setText(String.format("%,2d", requireNotNull(item).amount))
+        }
     }
 
     private fun initOnClickListener() {
@@ -70,7 +85,11 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
             viewModel.onClickHistoryType(false)
         }
         binding.btnAdd.setOnClickListener {
-            viewModel.insertHistory()
+            if (item == null) {
+                viewModel.insertHistory()
+            } else {
+                viewModel.updateHistory()
+            }
         }
         binding.tvDateValue.setOnClickListener {
             openDatePickerDialog()

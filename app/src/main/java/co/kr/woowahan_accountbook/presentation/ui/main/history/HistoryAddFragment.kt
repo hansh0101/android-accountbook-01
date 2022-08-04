@@ -107,6 +107,7 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
     private fun openDatePickerDialog() {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
+            R.style.DatePickerDialogTheme,
             { _, year, month, day ->
                 viewModel.setDate(
                     "${year}.${String.format("%02d", month + 1)}.${String.format("%02d", day)}"

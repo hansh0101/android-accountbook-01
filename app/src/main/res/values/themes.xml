@@ -14,4 +14,12 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="DatePickerDialogTheme" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="colorAccent">@color/yellow_disabled_80f5b853</item>
+        <item name="android:buttonBarButtonStyle">@style/DatePickerDialogButtonStyle</item>
+    </style>
+    <style name="DatePickerDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/yellow_disabled_80f5b853</item>
+    </style>
 </resources>

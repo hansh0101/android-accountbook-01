@@ -64,7 +64,9 @@ class SettingClassificationAdapter(
         fun onBind(classification: SettingClassification) {
             binding.classification = classification
             binding.root.setOnClickListener {
-                onClassificationClick(classification)
+                if (classification.id != 3 && classification.id != 10) {
+                    onClassificationClick(classification)
+                }
             }
         }
 

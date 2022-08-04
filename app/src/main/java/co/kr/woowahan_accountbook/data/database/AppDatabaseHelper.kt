@@ -45,12 +45,36 @@ class AppDatabaseHelper @Inject constructor(
         insertDefaultItems(database)
     }
 
-    override fun onConfigure(db: SQLiteDatabase) {
-        db.setForeignKeyConstraintsEnabled(true)
+    override fun onConfigure(database: SQLiteDatabase) {
+        database.setForeignKeyConstraintsEnabled(true)
     }
 
     override fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // TODO - 추후 Migration 부분에 대한 코드를 작성해야 한다.
+        val paymentDropQuery = "DROP TABLE IF EXISTS PAYMENT"
+        val classificationDropQuery = "DROP TABLE IF EXISTS CLASSIFICATION"
+        val historyDropQuery = "DROP TABLE IF EXISTS HISTORY"
+
+        with(database) {
+            execSQL(paymentDropQuery)
+            execSQL(classificationDropQuery)
+            execSQL(historyDropQuery)
+        }
+
+        onCreate(database)
+    }
+
+    override fun onDowngrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        val paymentDropQuery = "DROP TABLE IF EXISTS PAYMENT"
+        val classificationDropQuery = "DROP TABLE IF EXISTS CLASSIFICATION"
+        val historyDropQuery = "DROP TABLE IF EXISTS HISTORY"
+
+        with(database) {
+            execSQL(paymentDropQuery)
+            execSQL(classificationDropQuery)
+            execSQL(historyDropQuery)
+        }
+
+        onCreate(database)
     }
 
     private fun insertDefaultItems(database: SQLiteDatabase) {

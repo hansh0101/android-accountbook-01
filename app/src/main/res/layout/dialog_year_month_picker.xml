@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <NumberPicker
+        android:id="@+id/number_picker_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.NumberPicker"
+        app:layout_constraintEnd_toStartOf="@id/number_picker_month"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/ko_pub_world_dotum_pro"
+        android:text="년"
+        android:textColor="@color/light_purple_a79fcb"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/number_picker_year"
+        app:layout_constraintStart_toEndOf="@id/number_picker_year"
+        app:layout_constraintTop_toTopOf="@id/number_picker_year" />
+
+    <NumberPicker
+        android:id="@+id/number_picker_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.NumberPicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/number_picker_year"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/ko_pub_world_dotum_pro"
+        android:text="월"
+        android:textColor="@color/light_purple_a79fcb"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/number_picker_month"
+        app:layout_constraintStart_toEndOf="@id/number_picker_month"
+        app:layout_constraintTop_toTopOf="@id/number_picker_month" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

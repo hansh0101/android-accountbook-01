@@ -16,7 +16,8 @@ class ClassificationAddViewModel @Inject constructor(
     private val settingClassificationAddUseCase: SettingClassificationAddUseCase,
     private val settingClassificationUpdateUseCase: SettingClassificationUpdateUseCase
 ) : ViewModel() {
-    private var id: Int = 0
+    private val _id = MutableLiveData<Int>(0)
+    val id: LiveData<Int> get() = _id
 
     val name = MutableLiveData<String>()
     val colors = MutableLiveData<List<ColorInfo>>()
@@ -25,7 +26,7 @@ class ClassificationAddViewModel @Inject constructor(
     val isSuccess: LiveData<Boolean> get() = _isSuccess
 
     fun initDataSet(id: Int) {
-        this.id = id
+        _id.value = id
     }
 
     fun selectColor(colorIndex: Int) {
@@ -63,7 +64,7 @@ class ClassificationAddViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-                settingClassificationUpdateUseCase(id, type, color, isIncome)
+                settingClassificationUpdateUseCase(requireNotNull(id.value), type, color, isIncome)
             }.onSuccess {
                 _isSuccess.value = true
             }.onFailure {

@@ -147,7 +147,7 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:paddingVertical="16dp"
-            android:text="등록하기"
+            android:text="@{viewmodel.id == 0 ? `등록하기` : `수정하기`}"
             android:textColor="@color/white_ffffff"
             android:textFontWeight="700"
             android:textSize="14sp"

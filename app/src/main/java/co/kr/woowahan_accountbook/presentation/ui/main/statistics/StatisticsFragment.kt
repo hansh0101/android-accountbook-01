@@ -109,7 +109,7 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
             with(binding.chartStatistics) {
                 description.isEnabled = false
                 legend.isEnabled = false
-                setTransparentCircleColor(R.color.white_f7f6f3)
+                setTouchEnabled(false)
                 this.data = data
                 animateXY(1000, 1000)
             }

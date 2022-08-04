@@ -3,6 +3,7 @@ package co.kr.woowahan_accountbook.presentation.ui.main.statistics
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import co.kr.woowahan_accountbook.R
@@ -49,10 +50,20 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
 
     private fun initOnClickListener() {
         binding.ivLeft.setOnClickListener {
-            viewModel.setPreviousMonth()
+            if (viewModel.year.value == 2000 && viewModel.month.value == 1) {
+                Toast.makeText(requireContext(), "2000년 1월 이전은 조회할 수 없습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                viewModel.setPreviousMonth()
+            }
         }
         binding.ivRight.setOnClickListener {
-            viewModel.setNextMonth()
+            if (viewModel.year.value == 2099 && viewModel.month.value == 12) {
+                Toast.makeText(requireContext(), "2099년 12월 이후는 조회할 수 없습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                viewModel.setNextMonth()
+            }
         }
         binding.tvTitle.setOnClickListener {
             openDatePickerDialog()

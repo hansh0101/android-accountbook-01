@@ -110,17 +110,13 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
             R.style.DatePickerDialogTheme,
             { _, year, month, day ->
                 viewModel.setDate(
-                    "${year}.${String.format("%02d", month + 1)}.${
-                        String.format(
-                            "%02d",
-                            day
-                        )
-                    }.${DateUtil.getDayOfWeek(year, month + 1, day)}"
+                    "${year}.${String.format("%02d", month + 1)}.${String.format("%02d", day)}" +
+                            "$.{DateUtil.getDayOfWeek(year, month + 1, day)}"
                 )
             },
             DateUtil.getToday().split('.')[0].toInt(),
             DateUtil.getToday().split('.')[1].toInt() - 1,
-            DateUtil.getToday().split('.')[0].toInt(),
+            DateUtil.getToday().split('.')[2].toInt(),
         )
         val startDateString = "20000101"
         val endDateString = "20991231"

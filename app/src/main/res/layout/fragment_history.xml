@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="16dp"
-                    android:src="@drawable/ic_right" />
+                    android:src="@{viewmodel.historiesSelected.empty == true ? @drawable/ic_right : @drawable/ic_trash}" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -210,6 +210,7 @@
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/yellow_f5b853"
             android:src="@drawable/ic_plus"
+            android:visibility="@{viewmodel.historiesSelected.empty == true ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:rippleColor="@color/white_ffffff"

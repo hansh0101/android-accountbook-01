@@ -154,13 +154,6 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         }
         viewModel.historiesSelected.observe(viewLifecycleOwner) {
             historyAdapter.updateSelectedItems(it)
-            if (it.isEmpty()) {
-                binding.ivRight.setImageResource(R.drawable.ic_right)
-                binding.fabAdd.isVisible = true
-            } else {
-                binding.ivRight.setImageResource(R.drawable.ic_trash)
-                binding.fabAdd.isVisible = false
-            }
         }
     }
 }

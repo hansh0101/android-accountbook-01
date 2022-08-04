@@ -111,7 +111,7 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
             { _, year, month, day ->
                 viewModel.setDate(
                     "${year}.${String.format("%02d", month + 1)}.${String.format("%02d", day)}" +
-                            "$.{DateUtil.getDayOfWeek(year, month + 1, day)}"
+                            ".${DateUtil.getDayOfWeek(year, month + 1, day)}"
                 )
             },
             DateUtil.getToday().split('.')[0].toInt(),

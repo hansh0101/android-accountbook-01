@@ -55,7 +55,15 @@ class ClassificationAddFragment : BaseFragment<FragmentClassificationAddBinding>
             }
         }
         binding.rvClassificationColor.adapter = classificationColorAdapter
-        binding.tvTitle.text = if (isIncome == 1) "수입 카테고리 추가" else "지출 카테고리 추가"
+        binding.tvTitle.text = if (isIncome == 1 && classificationId == 0) {
+            "수입 카테고리 추가하기"
+        } else if(isIncome == 1 && classificationId != 0) {
+            "수입 카테고리 수정하기"
+        } else if(isIncome != 1 && classificationId == 0) {
+            "지출 카테고리 추가하기"
+        } else {
+            "지출 카테고리 수정하기"
+        }
         binding.btnAdd.setOnClickListener {
             when (classificationId) {
                 0 -> viewModel.addClassification()

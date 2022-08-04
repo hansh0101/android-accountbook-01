@@ -92,7 +92,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
             settingExpenditureClassificationAdapter,
             settingIncomeClassificationAdapter
         )
-        initSwipeRefreshLayout()
     }
 
     private fun observeData() {
@@ -104,13 +103,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
         }
         viewModel.incomeClassifications.observe(viewLifecycleOwner) {
             settingIncomeClassificationAdapter.updateItems(it)
-        }
-    }
-
-    private fun initSwipeRefreshLayout() {
-        binding.srlSetting.setOnRefreshListener {
-            viewModel.getData()
-            binding.srlSetting.isRefreshing = false
         }
     }
 }

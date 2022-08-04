@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/ko_pub_world_dotum_pro"
-                    android:text="내역 등록"
+                    android:text="@{viewmodel.item != null ? `내역 수정` : `내역 등록`}"
                     android:textColor="@color/purple_524d90"
                     android:textFontWeight="500"
                     android:textSize="18sp" />
@@ -308,7 +308,7 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:paddingVertical="16dp"
-            android:text="등록하기"
+            android:text="@{viewmodel.item != null ? `수정하기` : `등록하기`}"
             android:textColor="@color/white_ffffff"
             android:textFontWeight="700"
             android:textSize="14sp"

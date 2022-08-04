@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white_f7f6f3"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:paddingTop="8dp">
 
         <TextView
             android:id="@+id/tv_classification_label"
@@ -48,10 +48,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/ko_pub_world_dotum_pro"
+            android:text="@{@string/price_format(item.amount)}"
             android:textColor="@color/purple_524d90"
             android:textFontWeight="500"
             android:textSize="14sp"
-            android:text="@{@string/price_format(item.amount)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_classification_percentage"
             app:layout_constraintStart_toEndOf="@id/tv_classification_label"
@@ -70,6 +70,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="64%" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/light_purple_a79fcb"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_classification_percentage"
+            app:layout_constraintStart_toStartOf="@id/tv_classification_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_classification_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

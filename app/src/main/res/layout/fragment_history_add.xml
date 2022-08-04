@@ -176,7 +176,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/ko_pub_world_dotum_pro"
-            android:text="결제 수단"
+            android:text="@{viewmodel.isIncome == true ? `입금처` : `결제 수단`}"
             android:textColor="@color/purple_524d90"
             android:textFontWeight="500"
             android:textSize="14sp"

@@ -42,17 +42,25 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
     }
 
     private val viewModel by viewModels<HistoryAddViewModel>()
+    private var isIncomeEntered: Boolean = true
     private var item: HistoryItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        isIncomeEntered = arguments?.getBoolean("IS_INCOME") ?: true
         item = arguments?.getSerializable("ITEM") as? HistoryItem
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewmodel = viewModel
-        item?.let { viewModel.setItem(it) }
+
+        with(viewModel) {
+            binding.viewmodel = this
+            viewModel.onClickHistoryType(isIncomeEntered)
+            if(this@HistoryAddFragment.item != null) {
+                this.setItem(requireNotNull(this@HistoryAddFragment.item))
+            }
+        }
         initView()
         initOnClickListener()
         observeData()

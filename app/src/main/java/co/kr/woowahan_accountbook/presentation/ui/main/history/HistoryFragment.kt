@@ -61,9 +61,24 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     private fun initOnClickListener() {
         binding.fabAdd.setOnClickListener {
-            parentFragmentManager.commit {
-                replace<HistoryAddFragment>(R.id.fcv_main)
-                addToBackStack(HistoryAddFragment::class.java.simpleName)
+            if (viewModel.isIncomeSelected.value == true ||
+                (viewModel.isIncomeSelected.value == false && viewModel.isExpenditureSelected.value == false)
+            ) {
+                parentFragmentManager.commit {
+                    replace<HistoryAddFragment>(
+                        R.id.fcv_main,
+                        null,
+                        Bundle().apply { putBoolean("IS_INCOME", true) })
+                    addToBackStack(HistoryAddFragment::class.java.simpleName)
+                }
+            } else {
+                parentFragmentManager.commit {
+                    replace<HistoryAddFragment>(
+                        R.id.fcv_main,
+                        null,
+                        Bundle().apply { putBoolean("IS_INCOME", false) })
+                    addToBackStack(HistoryAddFragment::class.java.simpleName)
+                }
             }
         }
         binding.layoutIncome.setOnClickListener {

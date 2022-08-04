@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/ko_pub_world_dotum_pro"
-                    android:text="@{Integer.toString(viewmodel.year) + `년 ` + Integer.toString(viewmodel.month) + `월`}"
+                    android:text="@{viewmodel.historiesSelected.empty == true ? Integer.toString(viewmodel.year) + `년 ` + Integer.toString(viewmodel.month) + `월` : Integer.toString(viewmodel.historiesSelected.size()) + `개 선택`}"
                     android:textColor="@color/purple_524d90"
                     android:textFontWeight="500"
                     android:textSize="18sp" />

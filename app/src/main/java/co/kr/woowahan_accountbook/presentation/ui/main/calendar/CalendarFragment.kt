@@ -1,6 +1,5 @@
 package co.kr.woowahan_accountbook.presentation.ui.main.calendar
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -8,11 +7,10 @@ import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.FragmentCalendarBinding
 import co.kr.woowahan_accountbook.presentation.adapter.calendar.CalendarAdapter
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseFragment
+import co.kr.woowahan_accountbook.presentation.ui.widget.YearMonthPickerDialog
 import co.kr.woowahan_accountbook.presentation.viewmodel.main.calendar.CalendarViewModel
 import co.kr.woowahan_accountbook.util.DateUtil
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.*
 
 @AndroidEntryPoint
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
@@ -56,25 +54,14 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
     }
 
     private fun openDatePickerDialog() {
-        val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            { _, year, month, _ ->
-                viewModel.setDate(year, month + 1)
-            },
-            requireNotNull(viewModel.year.value),
-            requireNotNull(viewModel.month.value) - 1,
-            1,
-        )
-        val dateString = "20000101"
-        val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
-        val date: Date = simpleDateFormat.parse(dateString) as Date
-        val startDate = date.time
-        with(datePickerDialog) {
-            datePicker.minDate = startDate
-            datePicker.maxDate = System.currentTimeMillis()
-            setCanceledOnTouchOutside(false)
-            show()
-        }
+        val todayArray = DateUtil.getToday().split('.')
+        val yearMonthPickerDialog =
+            YearMonthPickerDialog.newInstance(todayArray[0].toInt(), todayArray[1].toInt()).apply {
+                this.setListener { _, year, month, _ ->
+                    viewModel.setDate(year, month)
+                }
+            }
+        yearMonthPickerDialog.show(childFragmentManager, null)
     }
 
     private fun observeData() {

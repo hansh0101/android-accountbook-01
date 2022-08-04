@@ -1,9 +1,9 @@
 package co.kr.woowahan_accountbook.presentation.ui.main.statistics
 
-import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import co.kr.woowahan_accountbook.R
@@ -11,14 +11,13 @@ import co.kr.woowahan_accountbook.databinding.FragmentStatisticsBinding
 import co.kr.woowahan_accountbook.domain.entity.statistics.StatisticsItem
 import co.kr.woowahan_accountbook.presentation.adapter.statistics.StatisticsAdapter
 import co.kr.woowahan_accountbook.presentation.ui.base.BaseFragment
+import co.kr.woowahan_accountbook.presentation.ui.widget.YearMonthPickerDialog
 import co.kr.woowahan_accountbook.presentation.viewmodel.main.statistics.StatisticsViewModel
 import co.kr.woowahan_accountbook.util.DateUtil
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.*
 
 @AndroidEntryPoint
 class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
@@ -34,7 +33,10 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
         super.onViewCreated(view, savedInstanceState)
         with(viewModel) {
             binding.viewmodel = this
-            setDate(DateUtil.getToday().split('.')[0].toInt(), DateUtil.getToday().split('.')[1].toInt())
+            setDate(
+                DateUtil.getToday().split('.')[0].toInt(),
+                DateUtil.getToday().split('.')[1].toInt()
+            )
             getStatistics()
         }
         initView()
@@ -48,10 +50,20 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
 
     private fun initOnClickListener() {
         binding.ivLeft.setOnClickListener {
-            viewModel.setPreviousMonth()
+            if (viewModel.year.value == 2000 && viewModel.month.value == 1) {
+                Toast.makeText(requireContext(), "2000년 1월 이전은 조회할 수 없습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                viewModel.setPreviousMonth()
+            }
         }
         binding.ivRight.setOnClickListener {
-            viewModel.setNextMonth()
+            if (viewModel.year.value == 2099 && viewModel.month.value == 12) {
+                Toast.makeText(requireContext(), "2099년 12월 이후는 조회할 수 없습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                viewModel.setNextMonth()
+            }
         }
         binding.tvTitle.setOnClickListener {
             openDatePickerDialog()
@@ -59,25 +71,14 @@ class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
     }
 
     private fun openDatePickerDialog() {
-        val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            { _, year, month, _ ->
-                viewModel.setDate(year, month + 1)
-            },
-            requireNotNull(viewModel.year.value),
-            requireNotNull(viewModel.month.value) - 1,
-            1,
-        )
-        val dateString = "20000101"
-        val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
-        val date: Date = simpleDateFormat.parse(dateString) as Date
-        val startDate = date.time
-        with(datePickerDialog) {
-            datePicker.minDate = startDate
-            datePicker.maxDate = System.currentTimeMillis()
-            setCanceledOnTouchOutside(false)
-            show()
-        }
+        val todayArray = DateUtil.getToday().split('.')
+        val yearMonthPickerDialog =
+            YearMonthPickerDialog.newInstance(todayArray[0].toInt(), todayArray[1].toInt()).apply {
+                this.setListener { _, year, month, _ ->
+                    viewModel.setDate(year, month)
+                }
+            }
+        yearMonthPickerDialog.show(childFragmentManager, null)
     }
 
     private fun observeData() {

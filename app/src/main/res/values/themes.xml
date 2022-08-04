@@ -19,7 +19,12 @@
         <item name="colorAccent">@color/yellow_disabled_80f5b853</item>
         <item name="android:buttonBarButtonStyle">@style/DatePickerDialogButtonStyle</item>
     </style>
+
     <style name="DatePickerDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/yellow_disabled_80f5b853</item>
+        <item name="android:textColor">@color/light_purple_a79fcb</item>
+    </style>
+
+    <style name="ThemeOverlay.NumberPicker" parent="Theme.WoowahanAccountBook">
+        <item name="colorControlNormal">@color/light_purple_a79fcb</item>
     </style>
 </resources>

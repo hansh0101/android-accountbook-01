@@ -3,9 +3,12 @@ package co.kr.woowahan_accountbook.presentation.viewmodel.main.history
 import androidx.lifecycle.*
 import co.kr.woowahan_accountbook.domain.entity.dto.ClassificationDto
 import co.kr.woowahan_accountbook.domain.entity.dto.PaymentDto
+import co.kr.woowahan_accountbook.domain.entity.history.HistoryItem
 import co.kr.woowahan_accountbook.domain.usecase.history.HistoryClassificationsUseCase
 import co.kr.woowahan_accountbook.domain.usecase.history.HistoryInsertUseCase
 import co.kr.woowahan_accountbook.domain.usecase.history.HistoryPaymentsUseCase
+import co.kr.woowahan_accountbook.domain.usecase.history.HistoryUpdateUseCase
+import co.kr.woowahan_accountbook.util.DateUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -15,7 +18,8 @@ import javax.inject.Inject
 class HistoryAddViewModel @Inject constructor(
     private val historyPaymentsUseCase: HistoryPaymentsUseCase,
     private val historyClassificationsUseCase: HistoryClassificationsUseCase,
-    private val historyInsertUseCase: HistoryInsertUseCase
+    private val historyInsertUseCase: HistoryInsertUseCase,
+    private val historyUpdateUseCase: HistoryUpdateUseCase
 ) : ViewModel() {
     private val _isIncome = MutableLiveData<Boolean>(true)
     val isIncome: LiveData<Boolean> get() = _isIncome
@@ -35,6 +39,9 @@ class HistoryAddViewModel @Inject constructor(
     private val _classifications = MutableLiveData<List<ClassificationDto>>()
     val classifications: LiveData<List<ClassificationDto>> get() = _classifications
 
+    private val _item = MutableLiveData<HistoryItem>()
+    val item: LiveData<HistoryItem> get() = _item
+
     private val _buttonEnableFlag = MediatorLiveData<Boolean>().apply {
         addSource(_date) { checkButtonEnableFlag() }
         addSource(amount) { checkButtonEnableFlag() }
@@ -44,6 +51,18 @@ class HistoryAddViewModel @Inject constructor(
 
     private val _isSuccess = MutableLiveData<Boolean>()
     val isSuccess: LiveData<Boolean> get() = _isSuccess
+
+    fun setItem(item: HistoryItem) = with(item) {
+        _item.value = this
+        _date.value = "${year}." +
+                "${String.format("%,2d", month)}." +
+                "${String.format("%,2d", day)}." +
+                "${DateUtil.getDayOfWeek(year, month, day)}"
+        _payment.value = paymentId
+        _classification.value = classificationId
+        this@HistoryAddViewModel.amount.value = amount
+        this@HistoryAddViewModel.description.value = description
+    }
 
     private fun checkButtonEnableFlag() {
         _buttonEnableFlag.value =
@@ -105,6 +124,38 @@ class HistoryAddViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching {
                 historyInsertUseCase(
+                    amountValue,
+                    descriptionValue,
+                    year,
+                    month,
+                    day,
+                    paymentId,
+                    classificationId
+                )
+            }.onSuccess {
+                _isSuccess.value = true
+            }.onFailure {
+                _isSuccess.value = false
+                Timber.e(it)
+            }
+        }
+    }
+
+    fun updateHistory() {
+        val id = requireNotNull(item.value).id
+        val dateArray = requireNotNull(date.value).split('.')
+        val year = dateArray[0].toInt()
+        val month = dateArray[1].toInt()
+        val day = dateArray[2].toInt()
+        val amountValue = requireNotNull(amount.value)
+        val paymentId = requireNotNull(payment.value)
+        val classificationId = requireNotNull(classification.value)
+        val descriptionValue = requireNotNull(description.value)
+
+        viewModelScope.launch {
+            runCatching {
+                historyUpdateUseCase(
+                    id,
                     amountValue,
                     descriptionValue,
                     year,

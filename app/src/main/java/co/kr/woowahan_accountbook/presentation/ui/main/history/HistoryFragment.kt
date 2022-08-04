@@ -26,9 +26,16 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     private val viewModel by viewModels<HistoryViewModel>()
     private val historyAdapter by lazy {
-        HistoryAdapter {
+        HistoryAdapter({
             viewModel.updateSelectedItems(it)
-        }
+        }, {
+            parentFragmentManager.commit {
+                replace<HistoryAddFragment>(R.id.fcv_main, null, Bundle().apply {
+                    putSerializable("ITEM", it)
+                })
+                addToBackStack(HistoryAddFragment::class.java.simpleName)
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

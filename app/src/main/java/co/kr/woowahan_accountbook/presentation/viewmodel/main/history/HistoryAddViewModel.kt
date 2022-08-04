@@ -112,13 +112,17 @@ class HistoryAddViewModel @Inject constructor(
     }
 
     fun insertHistory() {
+        val isIncome = requireNotNull(isIncome.value)
         val dateArray = requireNotNull(date.value).split('.')
         val year = dateArray[0].toInt()
         val month = dateArray[1].toInt()
         val day = dateArray[2].toInt()
         val amountValue = requireNotNull(amount.value)
         val paymentId = requireNotNull(payment.value)
-        val classificationId = requireNotNull(classification.value)
+        val classificationId = if(classification.value == 0) {
+            if(isIncome) 10
+            else 3
+        } else requireNotNull(classification.value)
         val descriptionValue = requireNotNull(description.value)
 
         viewModelScope.launch {

@@ -50,28 +50,28 @@ class AppDatabaseHelper @Inject constructor(
     }
 
     override fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        val historyDropQuery = "DROP TABLE IF EXISTS HISTORY"
         val paymentDropQuery = "DROP TABLE IF EXISTS PAYMENT"
         val classificationDropQuery = "DROP TABLE IF EXISTS CLASSIFICATION"
-        val historyDropQuery = "DROP TABLE IF EXISTS HISTORY"
 
         with(database) {
+            execSQL(historyDropQuery)
             execSQL(paymentDropQuery)
             execSQL(classificationDropQuery)
-            execSQL(historyDropQuery)
         }
 
         onCreate(database)
     }
 
     override fun onDowngrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        val historyDropQuery = "DROP TABLE IF EXISTS HISTORY"
         val paymentDropQuery = "DROP TABLE IF EXISTS PAYMENT"
         val classificationDropQuery = "DROP TABLE IF EXISTS CLASSIFICATION"
-        val historyDropQuery = "DROP TABLE IF EXISTS HISTORY"
 
         with(database) {
+            execSQL(historyDropQuery)
             execSQL(paymentDropQuery)
             execSQL(classificationDropQuery)
-            execSQL(historyDropQuery)
         }
 
         onCreate(database)

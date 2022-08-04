@@ -57,7 +57,7 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
         with(viewModel) {
             binding.viewmodel = this
             viewModel.onClickHistoryType(isIncomeEntered)
-            if(this@HistoryAddFragment.item != null) {
+            if (this@HistoryAddFragment.item != null) {
                 this.setItem(requireNotNull(this@HistoryAddFragment.item))
             }
         }
@@ -110,20 +110,28 @@ class HistoryAddFragment : BaseFragment<FragmentHistoryAddBinding>(),
             R.style.DatePickerDialogTheme,
             { _, year, month, day ->
                 viewModel.setDate(
-                    "${year}.${String.format("%02d", month + 1)}.${String.format("%02d", day)}"
+                    "${year}.${String.format("%02d", month + 1)}.${
+                        String.format(
+                            "%02d",
+                            day
+                        )
+                    }.${DateUtil.getDayOfWeek(year, month + 1, day)}"
                 )
             },
             DateUtil.getToday().split('.')[0].toInt(),
             DateUtil.getToday().split('.')[1].toInt() - 1,
             DateUtil.getToday().split('.')[0].toInt(),
         )
-        val dateString = "20000101"
+        val startDateString = "20000101"
+        val endDateString = "20991231"
         val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
-        val date: Date = simpleDateFormat.parse(dateString) as Date
-        val startDate = date.time
+        val startDate: Date = simpleDateFormat.parse(startDateString) as Date
+        val startDateTime = startDate.time
+        val endDate: Date = simpleDateFormat.parse(endDateString) as Date
+        val endDateTime = endDate.time
         with(datePickerDialog) {
-            datePicker.minDate = startDate
-            datePicker.maxDate = System.currentTimeMillis()
+            datePicker.minDate = startDateTime
+            datePicker.maxDate = endDateTime
             setCanceledOnTouchOutside(false)
             show()
         }

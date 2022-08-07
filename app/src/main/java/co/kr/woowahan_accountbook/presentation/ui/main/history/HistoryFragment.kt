@@ -41,10 +41,12 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewmodel = viewModel
         with(viewModel) {
-            setDate(
-                DateUtil.getToday().split('.')[0].toInt(),
-                DateUtil.getToday().split('.')[1].toInt()
-            )
+            if (viewModel.year.value == null || viewModel.month.value == null) {
+                setDate(
+                    DateUtil.getToday().split('.')[0].toInt(),
+                    DateUtil.getToday().split('.')[1].toInt()
+                )
+            }
             getHistories()
             getTotalAmountByType(true)
             getTotalAmountByType(false)
@@ -84,7 +86,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
             viewModel.onClickIncomeButton()
         }
         binding.layoutExpenditure.setOnClickListener {
-            viewModel.onClickExpenditure()
+            viewModel.onClickExpenditureButton()
         }
         binding.ivLeft.setOnClickListener {
             if (binding.fabAdd.isVisible) {
@@ -130,20 +132,66 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         yearMonthPickerDialog.show(childFragmentManager, null)
     }
 
-    private fun observeData() {
-        viewModel.histories.observe(viewLifecycleOwner) {
-            historyAdapter.updateItems(it)
-            binding.ivRight.setImageResource(R.drawable.ic_right)
-            binding.fabAdd.isVisible = true
+    private fun observeData() = with(viewModel) {
+        historyUiState.observe(viewLifecycleOwner) {
+            when (it) {
+                is HistoryViewModel.HistoryUiState.Init -> {
+                    binding.progressBar.isVisible = true
+                }
+                is HistoryViewModel.HistoryUiState.Success -> {
+                    binding.progressBar.isVisible = false
+                    historyAdapter.updateItems(it.histories)
+                }
+                is HistoryViewModel.HistoryUiState.Error -> {
+                    binding.progressBar.isVisible = false
+                    if (it.message != null) {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
+
+        totalIncomeAmountUiState.observe(viewLifecycleOwner) {
+            when (it) {
+                is HistoryViewModel.IncomeAmountUiState.Init -> {
+                    binding.tvIncomeValue.text = "0"
+                }
+                is HistoryViewModel.IncomeAmountUiState.Success -> {
+                    binding.tvIncomeValue.text = String.format("%,2d", it.totalIncomeAmount)
+                }
+                is HistoryViewModel.IncomeAmountUiState.Error -> {
+                    binding.tvIncomeValue.text = "0"
+                    if (it.message != null) {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        totalExpenditureAmountUiState.observe(viewLifecycleOwner) {
+            when (it) {
+                is HistoryViewModel.ExpenditureAmountUiState.Init -> {
+                    binding.tvExpenditureValue.text = "0"
+                }
+                is HistoryViewModel.ExpenditureAmountUiState.Success -> {
+                    binding.tvExpenditureValue.text =
+                        String.format("%,2d", it.totalExpenditureAmount)
+                }
+                is HistoryViewModel.ExpenditureAmountUiState.Error -> {
+                    binding.tvExpenditureValue.text = "0"
+                    if (it.message != null) {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
         viewModel.isIncomeSelected.observe(viewLifecycleOwner) {
             viewModel.getHistories()
         }
         viewModel.isExpenditureSelected.observe(viewLifecycleOwner) {
             with(viewModel) {
                 getHistories()
-                getTotalAmountByType(true)
-                getTotalAmountByType(false)
             }
         }
         viewModel.month.observe(viewLifecycleOwner) {

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import co.kr.woowahan_accountbook.R
 import co.kr.woowahan_accountbook.databinding.ItemHistoryBodyBinding
@@ -144,13 +145,43 @@ class HistoryAdapter(
     }
 
     fun updateItems(newItems: List<HistoryItem>) {
-        items.clear()
-        items.addAll(newItems)
-        notifyDataSetChanged()
+        val diffCallback = DiffUtilCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        this.items.run {
+            items.clear()
+            items.addAll(newItems)
+            diffResult.dispatchUpdatesTo(this@HistoryAdapter)
+        }
     }
 
     fun updateSelectedItems(newSelectedItems: List<HistoryItem>) {
         selectedItems.clear()
         selectedItems.addAll(newSelectedItems)
+    }
+
+    companion object {
+        class DiffUtilCallback(
+            private val oldList: List<HistoryItem>,
+            private val newList: List<HistoryItem>
+        ) : DiffUtil.Callback() {
+            override fun getOldListSize(): Int = oldList.size
+
+            override fun getNewListSize(): Int = newList.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                val oldItem = oldList[oldItemPosition]
+                val newItem = newList[newItemPosition]
+                return if(oldItem.type == HistoryItem.HEADER && newItem.type == HistoryItem.HEADER) {
+                    oldItem.day == newItem.day
+                } else {
+                    oldItem.id == newItem.id
+                }
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition] == newList[newItemPosition]
+            }
+        }
     }
 }

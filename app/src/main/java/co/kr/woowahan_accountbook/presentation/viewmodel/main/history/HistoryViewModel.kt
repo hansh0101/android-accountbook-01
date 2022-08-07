@@ -19,17 +19,40 @@ class HistoryViewModel @Inject constructor(
     private val historyTotalAmountByTypeUseCase: HistoryTotalAmountByTypeUseCase,
     private val historyDeleteUseCase: HistoriesDeleteUseCase
 ) : ViewModel() {
+    sealed class HistoryUiState {
+        object Init : HistoryUiState()
+        data class Success(val histories: List<HistoryItem>) : HistoryUiState()
+        data class Error(val message: String?) : HistoryUiState()
+    }
+
+    sealed class IncomeAmountUiState {
+        object Init : IncomeAmountUiState()
+        data class Success(val totalIncomeAmount: Int) : IncomeAmountUiState()
+        data class Error(val message: String?) : IncomeAmountUiState()
+    }
+
+    sealed class ExpenditureAmountUiState {
+        object Init : ExpenditureAmountUiState()
+        data class Success(val totalExpenditureAmount: Int) : ExpenditureAmountUiState()
+        data class Error(val message: String?) : ExpenditureAmountUiState()
+    }
+
+    private val _historyUiState = MutableLiveData<HistoryUiState>(HistoryUiState.Init)
+    val historyUiState: LiveData<HistoryUiState> get() = _historyUiState
+
+    private val _totalIncomeAmountUiState =
+        MutableLiveData<IncomeAmountUiState>(IncomeAmountUiState.Init)
+    val totalIncomeAmountUiState: LiveData<IncomeAmountUiState> get() = _totalIncomeAmountUiState
+
+    private val _totalExpenditureAmountUiState =
+        MutableLiveData<ExpenditureAmountUiState>(ExpenditureAmountUiState.Init)
+    val totalExpenditureAmountUiState: LiveData<ExpenditureAmountUiState> get() = _totalExpenditureAmountUiState
+
     private val _year = MutableLiveData<Int>()
     val year: LiveData<Int> get() = _year
 
     private val _month = MutableLiveData<Int>()
     val month: LiveData<Int> get() = _month
-
-    private val _isSuccess = MutableLiveData<Boolean>()
-    val isSuccess: LiveData<Boolean> get() = _isSuccess
-
-    private val _histories = MutableLiveData<List<HistoryItem>>()
-    val histories: LiveData<List<HistoryItem>> get() = _histories
 
     private val _historiesSelected = MutableLiveData<List<HistoryItem>>(listOf())
     val historiesSelected: LiveData<List<HistoryItem>> get() = _historiesSelected
@@ -39,11 +62,6 @@ class HistoryViewModel @Inject constructor(
 
     private val _isExpenditureSelected = MutableLiveData<Boolean>(true)
     val isExpenditureSelected: LiveData<Boolean> get() = _isExpenditureSelected
-
-    private val _totalIncomeAmount = MutableLiveData<Int>()
-    val totalIncomeAmount: LiveData<Int> get() = _totalIncomeAmount
-    private val _totalExpenditureAmount = MutableLiveData<Int>()
-    val totalExpenditureAmount: LiveData<Int> get() = _totalExpenditureAmount
 
     fun setDate(year: Int, month: Int) {
         _year.value = year
@@ -71,6 +89,7 @@ class HistoryViewModel @Inject constructor(
     fun getHistories() {
         viewModelScope.launch {
             runCatching {
+                _historyUiState.value = HistoryUiState.Init
                 historiesUseCase(
                     requireNotNull(year.value),
                     requireNotNull(month.value),
@@ -78,10 +97,9 @@ class HistoryViewModel @Inject constructor(
                     requireNotNull(isExpenditureSelected.value)
                 )
             }.onSuccess {
-                _histories.value = it
-                _isSuccess.value = true
+                _historyUiState.value = HistoryUiState.Success(it)
             }.onFailure {
-                _isSuccess.value = false
+                _historyUiState.value = HistoryUiState.Error(it.message)
                 Timber.e(it)
             }
         }
@@ -96,11 +114,13 @@ class HistoryViewModel @Inject constructor(
                     isIncome
                 )
             }.onSuccess {
-                _isSuccess.value = true
-                if (isIncome) _totalIncomeAmount.value = it
-                else _totalExpenditureAmount.value = it
+                if (isIncome) _totalIncomeAmountUiState.value = IncomeAmountUiState.Success(it)
+                else _totalExpenditureAmountUiState.value = ExpenditureAmountUiState.Success(it)
             }.onFailure {
-                _isSuccess.value = false
+                if (isIncome) _totalIncomeAmountUiState.value =
+                    IncomeAmountUiState.Error(it.message)
+                else _totalExpenditureAmountUiState.value =
+                    ExpenditureAmountUiState.Error(it.message)
                 Timber.e(it)
             }
         }
@@ -110,13 +130,13 @@ class HistoryViewModel @Inject constructor(
         _isIncomeSelected.value = !requireNotNull(isIncomeSelected.value)
     }
 
-    fun onClickExpenditure() {
+    fun onClickExpenditureButton() {
         _isExpenditureSelected.value = !requireNotNull(isExpenditureSelected.value)
     }
 
     fun updateSelectedItems(item: HistoryItem) {
         val list = requireNotNull(historiesSelected.value).toMutableList()
-        if(list.find { it == item } == null) list.add(item)
+        if (list.find { it == item } == null) list.add(item)
         else list.remove(item)
         _historiesSelected.value = list
     }

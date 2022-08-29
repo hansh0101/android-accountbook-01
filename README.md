@@ -5,6 +5,9 @@
 ### How to build
 clone this project, and run app
 
+### Presentation File(PPT on Web)
+[가계부 앱 만들기](https://www.miricanvas.com/v/11b6u07)
+
 ### Tech Stack
 
 - Minumum SDK 26
